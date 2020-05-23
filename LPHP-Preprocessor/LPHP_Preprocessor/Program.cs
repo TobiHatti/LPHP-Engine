@@ -55,9 +55,8 @@ namespace LPHP_Preprocessor
                                         lphpFiles.Add(md5Hash, filePath);
 
                                         Console.WriteLine($"Change detected in {filePath}!");
-                                        // Run LPHP-Converter
-                                        // -----
 
+                                        LPHPCompiler.Run(lphpFiles);
                                     }
                                 }
                             }
