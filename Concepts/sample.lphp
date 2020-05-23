@@ -1,0 +1,19 @@
+$${											// Opens an LPHP-Instruction block
+	Layout = "sampleLayout.lphp";							// Defines a layout-page. Must be a lphp-file with a RenderBody-Call
+	set PageTitle = "Start-Page";			// Variable Definition. Set-Keyword is only for the current file
+	glob GlobalValue = "GlobalSample";		// Variable Definition. Glob-keyword applies to all files in the scope
+}
+
+<h1> This is a Sample Page</h1>
+
+
+<h1>Welcome to $$PageTitle </h1> // Calls and prints the variable
+
+
+<h1>Welcome to $${ print(PageTitle) } </h1> // Prints the variable "PageTitle". Equivalent to $$PageTitle
+
+<?php $author = "Endev"; ?>
+
+<p>
+This is a sample text from <?= $author ?> 	// PHP-Call
+</p>

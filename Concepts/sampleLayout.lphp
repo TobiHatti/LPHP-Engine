@@ -1,0 +1,33 @@
+$${
+	NoCompile = true;	// Sets the NoCompile-Flag to true, therefor this file does 
+						// not get converted into a php-file. Usefull for pure layout-files
+	
+	set ShowContactInfo = true;
+	set ShowMoreInfo = false;
+}
+<html>
+<head>
+	<title>$$PageTitle</title>	// Page Title from calling file gets inserted. This fails if PageTitle is not set.
+	<title>$$?PageTitle</title> 	// Same as above, but returns "" [blank] if variable is not set 
+</head>
+<body>
+	<nav>
+		$$RenderPage("Path/To/File")	// Renders (inserts) a given file/page at this position.
+	</nav>
+	<main>
+		$$RenderBody()		// Renders the body
+	</main>
+	<footer>
+	$${ if ShowContactInfo: }				// Escaping using coditions
+		<span>Contact: XXXXXXXXXXX</span>
+	$${ endif }
+	
+	
+	$${
+		if ShowContactInfo then
+		RenderPage("Path/To/Conditional/Page");
+		endif
+	}
+	</footer>
+</body>
+</html>
