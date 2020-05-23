@@ -1,0 +1,7 @@
+H:\Git\LPHP\LPHP-Preprocessor\LPHP_Preprocessor\bin\Debug\LPHP_Preprocessor.exe.config
+H:\Git\LPHP\LPHP-Preprocessor\LPHP_Preprocessor\bin\Debug\LPHP_Preprocessor.exe
+H:\Git\LPHP\LPHP-Preprocessor\LPHP_Preprocessor\bin\Debug\LPHP_Preprocessor.pdb
+H:\Git\LPHP\LPHP-Preprocessor\LPHP_Preprocessor\obj\Debug\LPHP_Preprocessor.csprojAssemblyReference.cache
+H:\Git\LPHP\LPHP-Preprocessor\LPHP_Preprocessor\obj\Debug\LPHP_Preprocessor.csproj.CoreCompileInputs.cache
+H:\Git\LPHP\LPHP-Preprocessor\LPHP_Preprocessor\obj\Debug\LPHP_Preprocessor.exe
+H:\Git\LPHP\LPHP-Preprocessor\LPHP_Preprocessor\obj\Debug\LPHP_Preprocessor.pdb
