@@ -1,85 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LPHP_Preprocessor
 {
-    class LPHPCompiler
+    public class LPHPCompiler
     {
         public static void Run(Dictionary<string, string> lphpFiles)
         {
-            foreach(KeyValuePair<string, string> file in lphpFiles)
+            // Loop through all LPHP-Files and compile them
+            foreach (KeyValuePair<string, string> file in lphpFiles)
             {
-                // Load file into Memory
-                string fileContent;
-                using (StreamReader sr = new StreamReader(file.Value))
-                {
-                    fileContent = sr.ReadToEnd();
-                    sr.Close();
-                }
-
-                // Check for NoCompile-Flag
-                if (Regex.IsMatch(fileContent, @"\$\$\{[\S\s]*?NoCompile\s*?=\s*?(true|false);[\S\s]*?\}")) continue;
-
-
-                // Filter RenderPage-Command:
-                // \$\$RenderPage\(\"[\S\s]*?\"\)
-                // Action: Look inside file and paste into source.
-
-                // Filter Layout-Section:
-                // ...
-                // Action: get body-part and save temporary
-
-                
-
-
-                // Step 1: Merge all linked files into 1
-                //LPHPCompiler.FileMerger(file.Value);
-            }
-
-        }
-
-
-        private static bool FileMerger(string pInitialFilePath, StreamWriter pFileStream = null)
-        {
-            bool initialFile = false;
-            if(pFileStream == null)
-            {
-                // Target file (temp)
+                // Load and compile file
+                string output = LPHPCompiler.LoadFile(file.Value);
+                Console.WriteLine(output + "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
+                // Write result to temp journal
                 StreamWriter sw = new StreamWriter("journal.lphp-temp");
+                sw.WriteLine(output);
+                sw.Close();
 
-                initialFile = true;
+                // Copy temp-file to actual destination
+                // TODO
             }
-
-            string prepFile = LPHPSourcePrep(pInitialFilePath);
-
-            // Check for NoCompile-Flag
-            if (initialFile)
-            {
-                
-            }
-
-
-
-
-            // ...
-
-
-
-
-
-
-            return true;
         }
 
-        private static string LPHPSourcePrep(string pRawFilePath)
+        private static string LoadFile(string pFilePath)
         {
-            StreamReader sr = new StreamReader(pRawFilePath);
+            // Read entire file (without comments)
+            string fileContent = LoadWithoutComments(pFilePath);
+
+            // Remove tabs and linebreaks
+            fileContent = SourceCleanup(fileContent);
+
+            // Find RenderPage()-Command, and load Child-File
+            foreach (Match ItemMatch in Regex.Matches(fileContent, @"\$\$RenderPage\(\""[\S\s]*?\""\)"))
+            {
+                string originalRenderPageCommand = ItemMatch.Value;
+                string renderPageFile = Regex.Match(ItemMatch.Value, @"\""[\S\s]*?\""").Value.Replace("\"","");
+
+                fileContent = fileContent.Replace(originalRenderPageCommand, LoadFile(Path.Combine(Path.GetDirectoryName(pFilePath),renderPageFile)));
+            }
+
+            return fileContent;
+        }
+
+        private static string LoadWithoutComments(string pFilePath)
+        {
+            StreamReader sr = new StreamReader(pFilePath);
             StringBuilder sb = new StringBuilder();
             string line;
 
@@ -88,25 +60,13 @@ namespace LPHP_Preprocessor
                 sb.Append(Regex.Replace(line, @"\/\*[\s\S]*?\*\/|\/\/.*", ""));
             sr.Close();
 
-            // Remove Tabs and Line-Breaks
-            return sb.ToString().Replace("\t", "").Replace("\r\n", "");
-
+            return sb.ToString();
         }
 
-        private static string LPHPCommandExtracor(string pFileContent)
+        private static string SourceCleanup(string rawFileContent)
         {
-            // Filter LPHP-Commands ($${ ... })
-            foreach (Match lphpMatch in Regex.Matches(pFileContent, @"\$\$\{[\s\S]*?\}"))
-            {
-                Console.WriteLine(Regex.Replace(lphpMatch.Value, @"^\$\$\{|\}$", "").Trim());
-            }
-
-            foreach (Match lphpMatch in Regex.Matches(pFileContent, @"\$\$[^\{][\w]*"))
-            {
-                Console.WriteLine(Regex.Replace(lphpMatch.Value, @"^\$\$\{|\}$", "").Trim());
-            }
-
-            return "";
+            // Remove tabs and linebreaks
+            return rawFileContent.Replace("\t", "").Replace("\r\n", "");
         }
     }
 }
