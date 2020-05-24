@@ -37,6 +37,25 @@ namespace LPHP_Preprocessor
             // Remove tabs and linebreaks
             fileContent = SourceCleanup(fileContent);
 
+            // Find Layout-Command and set the layout of the page
+            if(Regex.IsMatch(fileContent, @"\$\$\{[\S\s]*?Layout\s*?=\s*?\""[\S\s]*?\""\;[\S\s]*?\}"))
+            {
+                // Determine Layout-File
+                string layoutFile = Regex.Match(fileContent, @"\$\$\{[\S\s]*?Layout\s*?=\s*?\""[\S\s]*?\""\;[\S\s]*?\}").Value;
+                layoutFile = Regex.Match(layoutFile, @"Layout\s*?=\s*?\""[\S\s]*?\""\;").Value;
+                layoutFile = Regex.Match(layoutFile, @"\""[\S\s]*?\""").Value.Replace("\"", "");
+
+                string layoutContent = LoadFile(Path.Combine(Path.GetDirectoryName(pFilePath), layoutFile));
+
+                string sourceBody = Regex.Replace(fileContent, @"^\$\$\{[\S\s]*?\}", "");
+
+                if (Regex.IsMatch(layoutContent, @"\$\$RenderBody\(\)"))
+                {
+                    fileContent = Regex.Replace(layoutContent, @"\$\$RenderBody\(\)", sourceBody);
+                }
+                else Console.WriteLine("********* NO RENDERBODY ***********");
+            }
+
             // Find RenderPage()-Command, and load Child-File
             foreach (Match ItemMatch in Regex.Matches(fileContent, @"\$\$RenderPage\(\""[\S\s]*?\""\)"))
             {
