@@ -11,11 +11,16 @@ namespace LPHP_Preprocessor
 {
     public class LPHPCompiler
     {
+        private static List<string> instructionSessionBuffer = new List<string>();
+
         public static void Run(Dictionary<string, string> lphpFiles)
         {
             // Loop through all LPHP-Files and compile them
             foreach (KeyValuePair<string, string> file in lphpFiles)
             {
+                // Clear instruction-Buffer
+                instructionSessionBuffer.Clear();
+
                 // Load and compile file
                 string output = LPHPCompiler.LoadFile(file.Value);
                 Console.WriteLine(output + "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
@@ -37,35 +42,48 @@ namespace LPHP_Preprocessor
             // Remove tabs and linebreaks
             fileContent = SourceCleanup(fileContent);
 
-            // Find Layout-Command and set the layout of the page
-            if(Regex.IsMatch(fileContent, @"\$\$\{[\S\s]*?Layout\s*?=\s*?\""[\S\s]*?\""\;[\S\s]*?\}"))
-            {
-                // Determine Layout-File
-                string layoutFile = Regex.Match(fileContent, @"\$\$\{[\S\s]*?Layout\s*?=\s*?\""[\S\s]*?\""\;[\S\s]*?\}").Value;
-                layoutFile = Regex.Match(layoutFile, @"Layout\s*?=\s*?\""[\S\s]*?\""\;").Value;
-                layoutFile = Regex.Match(layoutFile, @"\""[\S\s]*?\""").Value.Replace("\"", "");
+            // Extract header-instructions
+            fileContent = ExtractHeaderInstructions(fileContent, out string layout);
 
-                string layoutContent = LoadFile(Path.Combine(Path.GetDirectoryName(pFilePath), layoutFile));
+            // Load the layout around the source-file
+            fileContent = LoadIntoLayout(fileContent, layout, pFilePath);
 
-                string sourceBody = Regex.Replace(fileContent, @"^\$\$\{[\S\s]*?\}", "");
+            // Load RenderPages into source-file
+            fileContent = LoadRenderPages(fileContent, pFilePath);
 
-                if (Regex.IsMatch(layoutContent, @"\$\$RenderBody\(\)"))
-                {
-                    fileContent = Regex.Replace(layoutContent, @"\$\$RenderBody\(\)", sourceBody);
-                }
-                else Console.WriteLine("********* NO RENDERBODY ***********");
-            }
-
-            // Find RenderPage()-Command, and load Child-File
-            foreach (Match ItemMatch in Regex.Matches(fileContent, @"\$\$RenderPage\(\""[\S\s]*?\""\)"))
-            {
-                string originalRenderPageCommand = ItemMatch.Value;
-                string renderPageFile = Regex.Match(ItemMatch.Value, @"\""[\S\s]*?\""").Value.Replace("\"","");
-
-                fileContent = fileContent.Replace(originalRenderPageCommand, LoadFile(Path.Combine(Path.GetDirectoryName(pFilePath),renderPageFile)));
-            }
+           
 
             return fileContent;
+        }
+
+        private static string LoadIntoLayout(string pFileContent, string pLayoutFile, string pParentFilePath)
+        {
+            if(pLayoutFile != null)
+            {
+                // Load Layout and execute RenderBody
+                string layoutContent = LoadFile(Path.Combine(Path.GetDirectoryName(pParentFilePath), pLayoutFile));
+                if (layoutContent.Contains("$$RenderBody()"))
+                    //pFileContent = Regex.Replace(layoutContent, @"\$\$RenderBody\(\)", pFileContent, RegexOptions);
+                    pFileContent = layoutContent.Replace("$$RenderBody()", pFileContent);
+                else
+                    Console.WriteLine("********* NO RENDERBODY ***********");
+            }
+
+            return pFileContent;
+        }
+
+        private static string LoadRenderPages(string pFileContent, string pParentFilePath)
+        {
+            // Find RenderPage()-Command, and load Child-File
+            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$RenderPage\(\""[\S\s]*?\""\)"))
+            {
+                string originalRenderPageCommand = ItemMatch.Value;
+                string renderPageFile = Regex.Match(ItemMatch.Value, @"\""[\S\s]*?\""").Value.Replace("\"", "");
+
+                pFileContent = pFileContent.Replace(originalRenderPageCommand, LoadFile(Path.Combine(Path.GetDirectoryName(pParentFilePath), renderPageFile)));
+            }
+
+            return pFileContent;
         }
 
         private static string LoadWithoutComments(string pFilePath)
@@ -86,6 +104,22 @@ namespace LPHP_Preprocessor
         {
             // Remove tabs and linebreaks
             return rawFileContent.Replace("\t", "").Replace("\r\n", "");
+        }
+
+        private static string ExtractHeaderInstructions(string pFileContent, out string layoutFile)
+        {
+            layoutFile = null;
+
+            if (Regex.IsMatch(pFileContent, @"^[\s]*?\$\$\{[\S\s]*?\}"))
+            {
+                string[] headerInstructions = Regex.Match(pFileContent, @"^[\s]*?\$\$\{[\S\s]*?\}").Value.TrimStart('$','{').TrimEnd('}').Split(';');
+
+                foreach (string operation in headerInstructions)
+                    if (Regex.IsMatch(operation, @"Layout\s*?=\s*?\""[\S\s]*?\"""))
+                        layoutFile = Regex.Replace(operation, @"^Layout\s*?=\s*?\""|\""$", "");
+            }
+
+            return Regex.Replace(pFileContent, @"^[\s]*?\$\$\{[\S\s]*?\}", "");
         }
     }
 }
