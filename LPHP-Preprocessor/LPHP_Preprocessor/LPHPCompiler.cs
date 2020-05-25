@@ -18,6 +18,8 @@ namespace LPHP_Preprocessor
         private static readonly Dictionary<string, object> localVariables = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> globalVariables = new Dictionary<string, object>();
 
+        private static string currentCompileFile = "";
+
         public static void Run(Dictionary<string, string> lphpFiles)
         {
             // Clear file-buffer
@@ -78,20 +80,27 @@ namespace LPHP_Preprocessor
 
         private static string LoadFile(string pFilePath)
         {
+            currentCompileFile = pFilePath;
+
             // Read entire file (without comments)
             string fileContent = LoadWithoutComments(pFilePath);
+            currentCompileFile = pFilePath;
 
             // Remove tabs and linebreaks
             fileContent = SourceCleanup(fileContent);
+            currentCompileFile = pFilePath;
 
             // Extract header-instructions
             fileContent = ExtractHeaderInstructions(fileContent, out string layout);
+            currentCompileFile = pFilePath;
 
             // Load the layout around the source-file
             fileContent = LoadIntoLayout(fileContent, layout, pFilePath);
+            currentCompileFile = pFilePath;
 
             // Load RenderPages into source-file
             fileContent = LoadRenderPages(fileContent, pFilePath);
+            currentCompileFile = pFilePath;
 
             return fileContent;
         }
@@ -109,13 +118,34 @@ namespace LPHP_Preprocessor
                     else
                         pFileContent = pFileContent.Replace(ItemMatch.Value, localVariables[key.TrimStart('?')].ToString());
                 }
-                catch { }
+                catch 
+                { 
+                    // No warning here, because the variable could still be a global variable
+                }
             }
             return pFileContent;
         }
 
         private static string SetGlobalVariables(string pFileContent)
         {
+            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*"))
+            {
+                string key = ItemMatch.Value.TrimStart('$');
+
+                try
+                {
+                    if (key.StartsWith("?") && !globalVariables.ContainsKey(key.TrimStart('?')))
+                        pFileContent = pFileContent.Replace(ItemMatch.Value, "");
+                    else
+                        pFileContent = pFileContent.Replace(ItemMatch.Value, globalVariables[key.TrimStart('?')].ToString());
+                }
+                catch
+                {
+                    PrintError("Unknown variable in " + currentCompileFile);
+                    PrintError("Variable: " + key.TrimStart('?'));
+                    throw new ApplicationException();
+                }
+            }
             return pFileContent;
         }
 
@@ -204,7 +234,11 @@ namespace LPHP_Preprocessor
                     if (!localVariables.ContainsKey(varName))
                         localVariables.Add(varName, varValue);
                     else
-                        Console.WriteLine("Warning: " + varName + " gets assigned more than once!");
+                    {
+                        PrintWarning("Warning in " + currentCompileFile + ":");
+                        PrintWarning("Variable \"" + varName + "\" gets assigned more than once!");
+                        throw new ApplicationException();
+                    }
                 }
                 // [GLOB] Global variable
                 else if (Regex.IsMatch(instruction, @"^glob\s*?\S*?\s*?=\s*?[\S\s]*?$"))
@@ -215,7 +249,11 @@ namespace LPHP_Preprocessor
                     if (!globalVariables.ContainsKey(varName))
                         globalVariables.Add(varName, varValue);
                     else
-                        Console.WriteLine("Warning: " + varName + " gets assigned more than once!");
+                    {
+                        PrintWarning("Warning in " + currentCompileFile + ":");
+                        PrintWarning("Global variable \"" + varName + "\" gets assigned more than once!");
+                        throw new ApplicationException();
+                    }
 
                 }
                 // Ignored instructions
@@ -229,13 +267,9 @@ namespace LPHP_Preprocessor
                 // Invalid instruction
                 else
                 {
-                    Console.BackgroundColor = ConsoleColor.DarkRed;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("*** Error encountered ***");
-                    Console.WriteLine("filename > Line 23");
-                    Console.WriteLine($"Unknown instruction: \"{instruction}\"");
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    Console.ForegroundColor = ConsoleColor.White;
+                    PrintError("*** Error encountered ***");
+                    PrintError(currentCompileFile);
+                    PrintError($"Unknown instruction: \"{instruction}\"");
                     throw new ApplicationException();
                 }
 
@@ -266,6 +300,22 @@ namespace LPHP_Preprocessor
             else if (pVariableValue.ToLower() == "false") return false;
             else if (decimal.TryParse(pVariableValue, out _)) return decimal.Parse(pVariableValue);
             else return pVariableValue;
+        }
+
+        public static void PrintWarning(string pMessage)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(pMessage);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void PrintError(string pMessage)
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine(pMessage);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
         }
     }
 }
