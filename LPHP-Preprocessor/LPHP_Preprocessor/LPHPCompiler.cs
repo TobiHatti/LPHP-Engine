@@ -45,6 +45,8 @@ namespace LPHP_Preprocessor
                         // Load and compile file
                         string output = LoadFile(file.Value);
 
+                        currentCompileFile = file.Value;
+
                         PrepareInstructions();
 
                         output = SetLocalVariables(output);
@@ -57,6 +59,8 @@ namespace LPHP_Preprocessor
 
             foreach(KeyValuePair<string, string> file in fileBuffer)
             {
+                currentCompileFile = file.Key;
+
                 string fileContent = file.Value;
 
                 // Set global variables
@@ -158,7 +162,11 @@ namespace LPHP_Preprocessor
                 if (layoutContent.Contains("$$RenderBody()"))
                     pFileContent = layoutContent.Replace("$$RenderBody()", pFileContent);
                 else
-                    Console.WriteLine("********* NO RENDERBODY ***********");
+                {
+                    PrintError("*** Error in \"" + currentCompileFile + "\" ***");
+                    PrintError("RenderBody() doesn't get called! Layout-Pages require exactly one call to RenderBody()!");
+                    throw new ApplicationException();
+                }
             }
 
             return pFileContent;
@@ -267,8 +275,7 @@ namespace LPHP_Preprocessor
                 // Invalid instruction
                 else
                 {
-                    PrintError("*** Error encountered ***");
-                    PrintError(currentCompileFile);
+                    PrintError("*** Error in \"" + currentCompileFile + "\" ***");
                     PrintError($"Unknown instruction: \"{instruction}\"");
                     throw new ApplicationException();
                 }
