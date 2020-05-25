@@ -14,6 +14,8 @@ namespace LPHP_Preprocessor
     {
         static void Main(string[] args)
         {
+            Console.Title = "LPHP Preprocessor - Version " + typeof(LPHPCompiler).Assembly.GetName().Version.ToString(3);
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine("=================================================");
@@ -46,7 +48,7 @@ namespace LPHP_Preprocessor
             catch(IndexOutOfRangeException)
             {
                 LPHPCompiler.PrintError("*** LPHP Startup Error ***");
-                LPHPCompiler.PrintError("Please provide a path to the target folder.");
+                LPHPCompiler.PrintError("Please provide a path to the target folder and try again.");
             }
 
 #if DEBUG
