@@ -7,15 +7,16 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace LPHP_Preprocessor
 {
     public class LPHPCompiler
     {
-        private static List<string> instructionSessionBuffer = new List<string>();
-        private static Dictionary<string, string> fileBuffer = new Dictionary<string, string>();
-        private static Dictionary<string, object> localVariables = new Dictionary<string, object>();
-        private static Dictionary<string, object> globalVariables = new Dictionary<string, object>();
+        private static readonly List<string> instructionSessionBuffer = new List<string>();
+        private static readonly Dictionary<string, string> fileBuffer = new Dictionary<string, string>();
+        private static readonly Dictionary<string, object> localVariables = new Dictionary<string, object>();
+        private static readonly Dictionary<string, object> globalVariables = new Dictionary<string, object>();
 
         public static void Run(Dictionary<string, string> lphpFiles)
         {
@@ -222,14 +223,20 @@ namespace LPHP_Preprocessor
                     Regex.IsMatch(instruction, @"^Layout\s*?=\s*?\""[\S\s]*?\""$") ||
                     Regex.IsMatch(instruction, @"^NoCompile\s*?=\s*?(true|false)$") 
                     )
-                {
-                    
-
+                { 
+                    // Ignore. 
                 }
                 // Invalid instruction
                 else
                 {
-                    Console.WriteLine($"{instruction} is not a valid instruction");
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("*** Error encountered ***");
+                    Console.WriteLine("filename > Line 23");
+                    Console.WriteLine($"Unknown instruction: \"{instruction}\"");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    throw new ApplicationException();
                 }
 
                 // Remove entry from List
@@ -241,16 +248,17 @@ namespace LPHP_Preprocessor
 
         private static void SaveFile(string pOriginalFilename, string pFileContent)
         {
-            bool minOutput = false;
+            bool minOutput = true;
 
             string targetFile = Path.Combine(Path.GetDirectoryName(pOriginalFilename), Path.GetFileNameWithoutExtension(pOriginalFilename) + ".php");
 
             StreamWriter sw = new StreamWriter(targetFile);
             if (minOutput) sw.WriteLine(pFileContent);
-            else sw.WriteLine(System.Xml.Linq.XElement.Parse(pFileContent).ToString());
+            // TODO
+            else sw.WriteLine(pFileContent);
             sw.Close();
-        }      
-        
+        }
+
         private static object ValueParser(string pVariableValue)
         {
             if (pVariableValue.StartsWith("\"")) return pVariableValue.TrimStart('"').TrimEnd('"');

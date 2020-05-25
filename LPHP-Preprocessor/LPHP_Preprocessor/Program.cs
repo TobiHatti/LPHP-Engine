@@ -13,7 +13,10 @@ namespace LPHP_Preprocessor
     {
         static void Main(string[] args)
         {
-            string watchFolder;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
+
+            string watchFolder = "";
             try
             {
                 watchFolder = args[1];
@@ -26,6 +29,7 @@ namespace LPHP_Preprocessor
 #if DEBUG
             watchFolder = @"H:\LPHPTest\";
 #endif
+            watchFolder = @"H:\LPHPTest\";
 
             Dictionary<string, string> lphpFiles = new Dictionary<string, string>();
 
@@ -57,16 +61,26 @@ namespace LPHP_Preprocessor
 
                                         lphpFiles.Add(md5Hash, filePath);
 
-                                        Console.WriteLine($"Change detected in {filePath}!");
-
+                                        Console.WriteLine($"\r\nChange detected in {filePath}...");
                                         LPHPCompiler.Run(lphpFiles);
+
+                                        Console.BackgroundColor = ConsoleColor.DarkGreen;
+                                        Console.ForegroundColor = ConsoleColor.White;
+                                        Console.WriteLine($"Compiled successfully!");
+                                        Console.BackgroundColor = ConsoleColor.Black;
+                                        Console.ForegroundColor = ConsoleColor.White;
                                     }
                                 }
                             }
                         }
 #if !DEBUG
                     }
-                    catch { }
+                    catch 
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Compilation aborted. Please fix all errors shown above and try again.");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
 #endif
                 }
                 Thread.Sleep(100);
