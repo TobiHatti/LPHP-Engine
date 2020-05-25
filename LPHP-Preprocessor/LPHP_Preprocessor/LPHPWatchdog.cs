@@ -36,70 +36,89 @@ namespace LPHP_Preprocessor
             string watchFolder = "";
             try
             {
-                watchFolder = args[1];
+                watchFolder = args[0];
+                Console.Write("Watching directory \"");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(watchFolder);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\"");
             }
             catch(IndexOutOfRangeException)
             {
-                Console.WriteLine("Could not start the LPHP-Preprocessor. Please provide a path to the target folder.");
+                LPHPCompiler.PrintError("*** LPHP Startup Error ***");
+                LPHPCompiler.PrintError("Please provide a path to the target folder.");
             }
 
 #if DEBUG
             watchFolder = @"H:\LPHPTest\";
 #endif
-            watchFolder = @"H:\LPHPTest\";
-
-            Dictionary<string, string> lphpFiles = new Dictionary<string, string>();
-
-            while (true)
+            try
             {
-                foreach (string filePath in Directory.GetFiles(watchFolder))
+                if (!string.IsNullOrEmpty(watchFolder))
                 {
-#if !DEBUG
-                    try
+
+                    Dictionary<string, string> lphpFiles = new Dictionary<string, string>();
+
+                    while (true)
                     {
-#endif
-                        if (Path.GetExtension(filePath) == ".lphp")
+                        foreach (string filePath in Directory.GetFiles(watchFolder))
                         {
-                            using (var md5 = MD5.Create())
+    #if !DEBUG
+                            try
                             {
-                                using (var stream = File.OpenRead(filePath))
+    #endif
+                                if (Path.GetExtension(filePath) == ".lphp")
                                 {
-                                    byte[] md5Bytes = md5.ComputeHash(stream);
-
-                                    string md5Hash = Encoding.UTF8.GetString(md5Bytes, 0, md5Bytes.Length);
-                                    if (!lphpFiles.ContainsKey(md5Hash))
+                                    using (var md5 = MD5.Create())
                                     {
+                                        using (var stream = File.OpenRead(filePath))
+                                        {
+                                            byte[] md5Bytes = md5.ComputeHash(stream);
 
-                                        foreach (KeyValuePair<string, string> entry in lphpFiles.ToArray())
-                                            if (entry.Value == filePath) lphpFiles[entry.Key] = null;
+                                            string md5Hash = Encoding.UTF8.GetString(md5Bytes, 0, md5Bytes.Length);
+                                            if (!lphpFiles.ContainsKey(md5Hash))
+                                            {
 
-                                        foreach (var item in lphpFiles.Where(kvp => kvp.Value == null).ToList())
-                                            lphpFiles.Remove(item.Key);
+                                                foreach (KeyValuePair<string, string> entry in lphpFiles.ToArray())
+                                                    if (entry.Value == filePath) lphpFiles[entry.Key] = null;
 
-                                        lphpFiles.Add(md5Hash, filePath);
+                                                foreach (var item in lphpFiles.Where(kvp => kvp.Value == null).ToList())
+                                                    lphpFiles.Remove(item.Key);
 
-                                        Console.WriteLine($"\r\nChange detected in {filePath}...");
-                                        LPHPCompiler.Run(lphpFiles);
+                                                lphpFiles.Add(md5Hash, filePath);
 
-                                        Console.BackgroundColor = ConsoleColor.DarkGreen;
-                                        Console.ForegroundColor = ConsoleColor.White;
-                                        Console.WriteLine($"Compiled successfully!");
-                                        Console.BackgroundColor = ConsoleColor.Black;
-                                        Console.ForegroundColor = ConsoleColor.White;
+                                                Console.WriteLine($"\r\nChange detected in {filePath}...");
+                                                LPHPCompiler.Run(lphpFiles);
+
+                                                Console.BackgroundColor = ConsoleColor.DarkGreen;
+                                                Console.ForegroundColor = ConsoleColor.White;
+                                                Console.WriteLine($"Compiled successfully!");
+                                                Console.BackgroundColor = ConsoleColor.Black;
+                                                Console.ForegroundColor = ConsoleColor.White;
+                                            }
+                                        }
                                     }
                                 }
+    #if !DEBUG
                             }
+                            catch
+                            {
+                                LPHPCompiler.PrintWarning("Compilation aborted. Please fix all errors shown above and try again.");
+                            }
+    #endif
                         }
-#if !DEBUG
+                        Thread.Sleep(100);
                     }
-                    catch 
-                    {
-                        LPHPCompiler.PrintWarning("Compilation aborted. Please fix all errors shown above and try again.");
-                    }
-#endif
                 }
-                Thread.Sleep(100);
             }
+            catch(Exception ex)
+            {
+                LPHPCompiler.PrintError("*** Error reading the directory ***");
+                LPHPCompiler.PrintError("Please make sure the given directory exists.");
+            }
+
+            Console.ReadKey();
+            return;
         }
     }
 }
