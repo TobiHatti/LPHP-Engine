@@ -199,3 +199,10 @@ that don't have enough "reputation", which a program gains reputation by getting
 Therefor a new program with no reputation gets marked as "Potentially harmfull." To install it anyway, 
 click on "More Info" and then on "Run anyway". Alternatively, you can just download the source-code and compile the program yourself.
 
+## Downloads
+
+Get the current version [here](https://github.com/TobiHatti/LPHP-Engine/releases)
+
+Version: 0.1.0
+
+MD5: 3E744E02FAE6CB756396D0DDA55D7658
