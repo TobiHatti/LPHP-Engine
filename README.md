@@ -71,7 +71,7 @@ $${
 ```
 
 ### Set Compiler-Flags
-To view all possible compiler-flags, click [here]().
+To view all possible compiler-flags, click [here](https://github.com/TobiHatti/LPHP-Engine/tree/master#compiler-flags).
 
 Compiler-flags can be used to manipulate and modify the output and the resulting PHP-file.
 
@@ -86,7 +86,7 @@ $${
 ### Functions
 Functions can be called within the HTML/PHP-section of the file.
 
-For a list of all possible functions, click [here]()
+For a list of all possible functions, click [here](https://github.com/TobiHatti/LPHP-Engine/tree/master#functions-1)
 
 ```php
 <div class="pageContents">
