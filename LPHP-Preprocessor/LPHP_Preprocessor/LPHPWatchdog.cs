@@ -63,54 +63,54 @@ namespace LPHP_Preprocessor
 
                     while (true)
                     {
-                        foreach (string filePath in Directory.GetFiles(watchFolder))
+                        foreach (string filePath in Directory.EnumerateFiles(watchFolder, "*.*", SearchOption.AllDirectories))
                         {
-    #if !DEBUG
-                            try
+#if !DEBUG
+                        try
+                        {
+#endif
+                            if (Path.GetExtension(filePath) == ".lphp")
                             {
-    #endif
-                                if (Path.GetExtension(filePath) == ".lphp")
+                                using (var md5 = MD5.Create())
                                 {
-                                    using (var md5 = MD5.Create())
+                                    using (var stream = File.OpenRead(filePath))
                                     {
-                                        using (var stream = File.OpenRead(filePath))
+                                        byte[] md5Bytes = md5.ComputeHash(stream);
+
+                                        string md5Hash = Encoding.UTF8.GetString(md5Bytes, 0, md5Bytes.Length);
+                                        if (!lphpFiles.ContainsKey(md5Hash))
                                         {
-                                            byte[] md5Bytes = md5.ComputeHash(stream);
 
-                                            string md5Hash = Encoding.UTF8.GetString(md5Bytes, 0, md5Bytes.Length);
-                                            if (!lphpFiles.ContainsKey(md5Hash))
-                                            {
+                                            foreach (KeyValuePair<string, string> entry in lphpFiles.ToArray())
+                                                if (entry.Value == filePath) lphpFiles[entry.Key] = null;
 
-                                                foreach (KeyValuePair<string, string> entry in lphpFiles.ToArray())
-                                                    if (entry.Value == filePath) lphpFiles[entry.Key] = null;
+                                            foreach (var item in lphpFiles.Where(kvp => kvp.Value == null).ToList())
+                                                lphpFiles.Remove(item.Key);
 
-                                                foreach (var item in lphpFiles.Where(kvp => kvp.Value == null).ToList())
-                                                    lphpFiles.Remove(item.Key);
+                                            lphpFiles.Add(md5Hash, filePath);
 
-                                                lphpFiles.Add(md5Hash, filePath);
+                                            Console.WriteLine($"\r\nChange detected in {filePath}...");
+                                            LPHPCompiler.Run(lphpFiles);
 
-                                                Console.WriteLine($"\r\nChange detected in {filePath}...");
-                                                LPHPCompiler.Run(lphpFiles);
-
-                                                Console.BackgroundColor = ConsoleColor.DarkGreen;
-                                                Console.ForegroundColor = ConsoleColor.White;
-                                                Console.WriteLine($"Compiled successfully!");
-                                                Console.BackgroundColor = ConsoleColor.Black;
-                                                Console.ForegroundColor = ConsoleColor.White;
-                                            }
+                                            Console.BackgroundColor = ConsoleColor.DarkGreen;
+                                            Console.ForegroundColor = ConsoleColor.White;
+                                            Console.WriteLine($"Compiled successfully!");
+                                            Console.BackgroundColor = ConsoleColor.Black;
+                                            Console.ForegroundColor = ConsoleColor.White;
                                         }
                                     }
                                 }
-    #if !DEBUG
                             }
-                            catch
-                            {
-                                LPHPCompiler.PrintWarning("Compilation aborted. Please fix all errors shown above and try again.");
-                            }
-    #endif
+#if !DEBUG
                         }
-                        Thread.Sleep(100);
+                        catch
+                        {
+                            LPHPCompiler.PrintWarning("Compilation aborted. Please fix all errors shown above and try again.");
+                        }
+#endif
+                        }
                     }
+                    Thread.Sleep(100);
                 }
             }
             catch(Exception)
