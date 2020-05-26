@@ -112,13 +112,13 @@ namespace LPHP_Preprocessor
         private static string SetLocalVariables(string pFileContent)
         {
             // Read in functions and variable calls
-            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))"))
+            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))?"))
             {
                 // Check if the matched object is not a function-call
                 if (!Regex.IsMatch(ItemMatch.Value, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))"))
                 {
                     string key = ItemMatch.Value.TrimStart('$');
-
+                     
                     try
                     {
                         if (key.StartsWith("?") && !localVariables.ContainsKey(key.TrimStart('?')))
@@ -138,7 +138,7 @@ namespace LPHP_Preprocessor
         private static string SetGlobalVariables(string pFileContent)
         {
             // Read in functions and variable calls
-            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))"))
+            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))?"))
             {
                 // Check if the matched object is not a function-call
                 if (!Regex.IsMatch(ItemMatch.Value, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))"))
