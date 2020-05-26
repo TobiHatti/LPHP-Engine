@@ -54,6 +54,10 @@ namespace LPHP_Preprocessor
                         // Add file to buffer. Required for global variables and saving.
                         fileBuffer.Add(file.Value, output);
                     }
+                    else
+                    {
+                        DeleteFile(file.Value);
+                    }
                 }   
             }
 
@@ -367,6 +371,13 @@ namespace LPHP_Preprocessor
                 else sw.WriteLine(pFileContent);
                 sw.Close();
             }
+        }
+
+        private static void DeleteFile(string pOriginalFilename)
+        {
+            string targetFile = Path.Combine(Path.GetDirectoryName(pOriginalFilename), Path.GetFileNameWithoutExtension(pOriginalFilename) + ".php");
+
+            File.Delete(targetFile);
         }
 
         private static object ValueParser(string pVariableValue)
