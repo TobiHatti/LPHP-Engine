@@ -157,14 +157,25 @@ namespace LPHP_Preprocessor
         {
             if(pLayoutFile != null)
             {
-                // Load Layout and execute RenderBody
-                string layoutContent = LoadFile(Path.Combine(Path.GetDirectoryName(pParentFilePath), pLayoutFile));
-                if (layoutContent.Contains("$$RenderBody()"))
-                    pFileContent = layoutContent.Replace("$$RenderBody()", pFileContent);
+                string layoutFilePath = Path.Combine(Path.GetDirectoryName(pParentFilePath), pLayoutFile);
+                if (File.Exists(layoutFilePath))
+                {
+                    // Load Layout and execute RenderBody
+                    string layoutContent = LoadFile(layoutFilePath);
+                    if (layoutContent.Contains("$$RenderBody()"))
+                        pFileContent = layoutContent.Replace("$$RenderBody()", pFileContent);
+                    else
+                    {
+                        PrintError("*** Error in \"" + currentCompileFile + "\" ***");
+                        PrintError("RenderBody() doesn't get called! Layout-Pages require exactly one call to RenderBody()!");
+                        throw new ApplicationException();
+                    }
+                }
                 else
                 {
                     PrintError("*** Error in \"" + currentCompileFile + "\" ***");
-                    PrintError("RenderBody() doesn't get called! Layout-Pages require exactly one call to RenderBody()!");
+                    PrintError("Could not load Layout-Page: ");
+                    PrintError("\"" + layoutFilePath + "\" does not exist.");
                     throw new ApplicationException();
                 }
             }
@@ -180,7 +191,17 @@ namespace LPHP_Preprocessor
                 string originalRenderPageCommand = ItemMatch.Value;
                 string renderPageFile = Regex.Match(ItemMatch.Value, @"\""[\S\s]*?\""").Value.Replace("\"", "");
 
-                pFileContent = pFileContent.Replace(originalRenderPageCommand, LoadFile(Path.Combine(Path.GetDirectoryName(pParentFilePath), renderPageFile)));
+                renderPageFile = Path.Combine(Path.GetDirectoryName(pParentFilePath), renderPageFile);
+
+                if(File.Exists(renderPageFile))
+                    pFileContent = pFileContent.Replace(originalRenderPageCommand, LoadFile(renderPageFile));
+                else
+                {
+                    PrintError("*** Error in \"" + currentCompileFile + "\" ***");
+                    PrintError("Could not render Page: ");
+                    PrintError("\"" + renderPageFile + "\" does not exist.");
+                    throw new ApplicationException();
+                }
             }
 
             return pFileContent;

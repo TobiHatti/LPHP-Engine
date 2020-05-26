@@ -113,7 +113,7 @@ namespace LPHP_Preprocessor
                     }
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 LPHPCompiler.PrintError("*** Error reading the directory ***");
                 LPHPCompiler.PrintError("Please make sure the given directory exists.");
