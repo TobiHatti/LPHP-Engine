@@ -203,6 +203,6 @@ click on "More Info" and then on "Run anyway". Alternatively, you can just downl
 
 Get the current version [here](https://github.com/TobiHatti/LPHP-Engine/releases)
 
-Version: 0.1.0
+Version: 0.1.1
 
-MD5: 3E744E02FAE6CB756396D0DDA55D7658
+MD5: B4C5024D77458077995E2223E24D04AE
