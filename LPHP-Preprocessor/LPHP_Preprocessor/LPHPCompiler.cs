@@ -239,7 +239,7 @@ namespace LPHP_Preprocessor
                 {
                     if (!string.IsNullOrEmpty(operation))
                     {
-                        instructionSessionBuffer.Add(operation);
+                        instructionSessionBuffer.Add(operation.Trim());
 
                         if (Regex.IsMatch(operation, @"Layout\s*?=\s*?\""[\S\s]*?\"""))
                             layoutFile = Regex.Replace(operation, @"^Layout\s*?=\s*?\""|\""$", "");
