@@ -111,20 +111,25 @@ namespace LPHP_Preprocessor
 
         private static string SetLocalVariables(string pFileContent)
         {
-            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*"))
+            // Read in functions and variable calls
+            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))"))
             {
-                string key = ItemMatch.Value.TrimStart('$');
-
-                try
+                // Check if the matched object is not a function-call
+                if (!Regex.IsMatch(ItemMatch.Value, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))"))
                 {
-                    if (key.StartsWith("?") && !localVariables.ContainsKey(key.TrimStart('?')))
-                        pFileContent = pFileContent.Replace(ItemMatch.Value, "");
-                    else
-                        pFileContent = pFileContent.Replace(ItemMatch.Value, localVariables[key.TrimStart('?')].ToString());
-                }
-                catch 
-                { 
-                    // No warning here, because the variable could still be a global variable
+                    string key = ItemMatch.Value.TrimStart('$');
+
+                    try
+                    {
+                        if (key.StartsWith("?") && !localVariables.ContainsKey(key.TrimStart('?')))
+                            pFileContent = pFileContent.Replace(ItemMatch.Value, "");
+                        else
+                            pFileContent = pFileContent.Replace(ItemMatch.Value, localVariables[key.TrimStart('?')].ToString());
+                    }
+                    catch
+                    {
+                        // No warning here, because the variable could still be a global variable
+                    }
                 }
             }
             return pFileContent;
@@ -132,26 +137,32 @@ namespace LPHP_Preprocessor
 
         private static string SetGlobalVariables(string pFileContent)
         {
-            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*"))
+            // Read in functions and variable calls
+            foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))"))
             {
-                string key = ItemMatch.Value.TrimStart('$');
-#if !DEBUG
-                try
+                // Check if the matched object is not a function-call
+                if (!Regex.IsMatch(ItemMatch.Value, @"\$\$\??(?!\{)\w*(\([\S\s]*?\))"))
                 {
-#endif
-                    if (key.StartsWith("?") && !globalVariables.ContainsKey(key.TrimStart('?')))
-                        pFileContent = pFileContent.Replace(ItemMatch.Value, "");
-                    else
-                        pFileContent = pFileContent.Replace(ItemMatch.Value, globalVariables[key.TrimStart('?')].ToString());
+                    string key = ItemMatch.Value.TrimStart('$');
 #if !DEBUG
-                }
-                catch
-                {
-                    PrintError("Unknown variable in " + currentCompileFile);
-                    PrintError("Variable: " + key.TrimStart('?'));
-                    throw new ApplicationException();
-                }
+                    try
+                    {
 #endif
+                        if (key.StartsWith("?") && !globalVariables.ContainsKey(key.TrimStart('?')))
+                            pFileContent = pFileContent.Replace(ItemMatch.Value, "");
+                        else
+                            pFileContent = pFileContent.Replace(ItemMatch.Value, globalVariables[key.TrimStart('?')].ToString());
+#if !DEBUG
+                    }
+                    catch
+                    {
+                        PrintError("Unknown variable in " + currentCompileFile);
+                        PrintError("Variable: " + key.TrimStart('?'));
+                        throw new ApplicationException();
+                    
+                    }
+#endif
+                }
             }
             return pFileContent;
         }
@@ -270,10 +281,10 @@ namespace LPHP_Preprocessor
 
                 foreach (string operation in headerInstructions)
                 {
-                    if (!string.IsNullOrEmpty(operation))
-                    {
-                        string operationTrimmed = operation.Trim();
+                    string operationTrimmed = operation.Trim();
 
+                    if (!string.IsNullOrEmpty(operationTrimmed))
+                    {
                         instructionSessionBuffer.Add(operationTrimmed);
 
                         if (Regex.IsMatch(operationTrimmed, @"Layout\s*?=\s*?\""[\S\s]*?\"""))
