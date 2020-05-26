@@ -74,8 +74,10 @@ namespace LPHP_Preprocessor
                                 {
                                     using (var md5 = MD5.Create())
                                     {
+#if !DEBUG
                                         try
-                                        { 
+                                        {
+#endif
                                             using (var stream = File.OpenRead(filePath))
                                             {
                                                 byte[] md5Bytes = md5.ComputeHash(stream);
@@ -102,11 +104,13 @@ namespace LPHP_Preprocessor
                                                     Console.ForegroundColor = ConsoleColor.White;
                                                 }
                                             }
+#if !DEBUG
                                         }
                                         catch(IOException)
                                         {
                                             LPHPCompiler.PrintWarning("Can't keep up! Compilation-Cycle skipped.");
                                         }
+#endif
                                     }
                                 }
 #if !DEBUG
@@ -118,7 +122,7 @@ namespace LPHP_Preprocessor
 #endif
                         }
 
-                        //Thread.Sleep(100);
+                        Thread.Sleep(100);
                     }
                 }
 #if !DEBUG

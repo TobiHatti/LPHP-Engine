@@ -135,13 +135,15 @@ namespace LPHP_Preprocessor
             foreach (Match ItemMatch in Regex.Matches(pFileContent, @"\$\$\??(?!\{)\w*"))
             {
                 string key = ItemMatch.Value.TrimStart('$');
-
+#if !DEBUG
                 try
                 {
+#endif
                     if (key.StartsWith("?") && !globalVariables.ContainsKey(key.TrimStart('?')))
                         pFileContent = pFileContent.Replace(ItemMatch.Value, "");
                     else
                         pFileContent = pFileContent.Replace(ItemMatch.Value, globalVariables[key.TrimStart('?')].ToString());
+#if !DEBUG
                 }
                 catch
                 {
@@ -149,6 +151,7 @@ namespace LPHP_Preprocessor
                     PrintError("Variable: " + key.TrimStart('?'));
                     throw new ApplicationException();
                 }
+#endif
             }
             return pFileContent;
         }
@@ -157,7 +160,22 @@ namespace LPHP_Preprocessor
         {
             if(pLayoutFile != null)
             {
-                string layoutFilePath = Path.Combine(Path.GetDirectoryName(pParentFilePath), pLayoutFile);
+                string layoutFilePath;
+#if !DEBUG
+                try
+                {
+#endif
+                    layoutFilePath = Path.Combine(Path.GetDirectoryName(pParentFilePath), pLayoutFile);
+#if !DEBUG
+                }
+                catch
+                {
+                    PrintError("*** Error in \"" + currentCompileFile + "\" ***");
+                    PrintError("\"" + pLayoutFile + "\" is not a valid file-path.");
+                    throw new ApplicationException();
+                }
+#endif
+
                 if (File.Exists(layoutFilePath))
                 {
                     // Load Layout and execute RenderBody
@@ -191,15 +209,29 @@ namespace LPHP_Preprocessor
                 string originalRenderPageCommand = ItemMatch.Value;
                 string renderPageFile = Regex.Match(ItemMatch.Value, @"\""[\S\s]*?\""").Value.Replace("\"", "");
 
-                renderPageFile = Path.Combine(Path.GetDirectoryName(pParentFilePath), renderPageFile);
+                string renderPageFilePath = "";
+#if !DEBUG
+                try
+                {
+#endif
+                    renderPageFilePath = Path.Combine(Path.GetDirectoryName(pParentFilePath), renderPageFile);
+#if !DEBUG
+                }
+                catch
+                {
+                    PrintError("*** Error in \"" + currentCompileFile + "\" ***");
+                    PrintError("\"" + renderPageFile + "\" is not a valid file-path.");
+                    throw new ApplicationException();
+                }
+#endif
 
-                if(File.Exists(renderPageFile))
-                    pFileContent = pFileContent.Replace(originalRenderPageCommand, LoadFile(renderPageFile));
+                if (File.Exists(renderPageFilePath))
+                    pFileContent = pFileContent.Replace(originalRenderPageCommand, LoadFile(renderPageFilePath));
                 else
                 {
                     PrintError("*** Error in \"" + currentCompileFile + "\" ***");
                     PrintError("Could not render Page: ");
-                    PrintError("\"" + renderPageFile + "\" does not exist.");
+                    PrintError("\"" + renderPageFilePath + "\" does not exist.");
                     throw new ApplicationException();
                 }
             }
@@ -240,10 +272,12 @@ namespace LPHP_Preprocessor
                 {
                     if (!string.IsNullOrEmpty(operation))
                     {
-                        instructionSessionBuffer.Add(operation.Trim());
+                        string operationTrimmed = operation.Trim();
 
-                        if (Regex.IsMatch(operation, @"Layout\s*?=\s*?\""[\S\s]*?\"""))
-                            layoutFile = Regex.Replace(operation, @"^Layout\s*?=\s*?\""|\""$", "");
+                        instructionSessionBuffer.Add(operationTrimmed);
+
+                        if (Regex.IsMatch(operationTrimmed, @"Layout\s*?=\s*?\""[\S\s]*?\"""))
+                            layoutFile = Regex.Replace(operationTrimmed, @"^Layout\s*?=\s*?\""|\""$", "");
                     }
                 }
             }
