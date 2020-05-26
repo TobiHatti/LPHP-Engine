@@ -50,15 +50,16 @@ namespace LPHP_Preprocessor
                 LPHPCompiler.PrintError("*** LPHP Startup Error ***");
                 LPHPCompiler.PrintError("Please provide a path to the target folder and try again.");
             }
-
+            watchFolder = @"H:\Git\Endev-Web\PHP-Final\EndevWebsite";
 #if DEBUG
             watchFolder = @"H:\Git\Endev-Web\PHP-Final\EndevWebsite";
 #endif
+#if !DEBUG
             try
             {
+#endif
                 if (!string.IsNullOrEmpty(watchFolder))
                 {
-
                     Dictionary<string, string> lphpFiles = new Dictionary<string, string>();
 
                     while (true)
@@ -66,54 +67,63 @@ namespace LPHP_Preprocessor
                         foreach (string filePath in Directory.EnumerateFiles(watchFolder, "*.*", SearchOption.AllDirectories))
                         {
 #if !DEBUG
-                        try
-                        {
-#endif
-                            if (Path.GetExtension(filePath) == ".lphp")
+                            try
                             {
-                                using (var md5 = MD5.Create())
+#endif
+                                if (Path.GetExtension(filePath) == ".lphp")
                                 {
-                                    using (var stream = File.OpenRead(filePath))
+                                    using (var md5 = MD5.Create())
                                     {
-                                        byte[] md5Bytes = md5.ComputeHash(stream);
+                                        try
+                                        { 
+                                            using (var stream = File.OpenRead(filePath))
+                                            {
+                                                byte[] md5Bytes = md5.ComputeHash(stream);
 
-                                        string md5Hash = Encoding.UTF8.GetString(md5Bytes, 0, md5Bytes.Length);
-                                        if (!lphpFiles.ContainsKey(md5Hash))
+                                                string md5Hash = Encoding.UTF8.GetString(md5Bytes, 0, md5Bytes.Length);
+                                                if (!lphpFiles.ContainsKey(md5Hash))
+                                                {
+
+                                                    foreach (KeyValuePair<string, string> entry in lphpFiles.ToArray())
+                                                        if (entry.Value == filePath) lphpFiles[entry.Key] = null;
+
+                                                    foreach (var item in lphpFiles.Where(kvp => kvp.Value == null).ToList())
+                                                        lphpFiles.Remove(item.Key);
+
+                                                    lphpFiles.Add(md5Hash, filePath);
+
+                                                    Console.WriteLine($"\r\nChange detected in {filePath}...");
+                                                    LPHPCompiler.Run(lphpFiles);
+
+                                                    Console.BackgroundColor = ConsoleColor.DarkGreen;
+                                                    Console.ForegroundColor = ConsoleColor.White;
+                                                    Console.WriteLine($"Compiled successfully!");
+                                                    Console.BackgroundColor = ConsoleColor.Black;
+                                                    Console.ForegroundColor = ConsoleColor.White;
+                                                }
+                                            }
+                                        }
+                                        catch(IOException)
                                         {
-
-                                            foreach (KeyValuePair<string, string> entry in lphpFiles.ToArray())
-                                                if (entry.Value == filePath) lphpFiles[entry.Key] = null;
-
-                                            foreach (var item in lphpFiles.Where(kvp => kvp.Value == null).ToList())
-                                                lphpFiles.Remove(item.Key);
-
-                                            lphpFiles.Add(md5Hash, filePath);
-
-                                            Console.WriteLine($"\r\nChange detected in {filePath}...");
-                                            LPHPCompiler.Run(lphpFiles);
-
-                                            Console.BackgroundColor = ConsoleColor.DarkGreen;
-                                            Console.ForegroundColor = ConsoleColor.White;
-                                            Console.WriteLine($"Compiled successfully!");
-                                            Console.BackgroundColor = ConsoleColor.Black;
-                                            Console.ForegroundColor = ConsoleColor.White;
+                                            LPHPCompiler.PrintWarning("Can't keep up! Compilation-Cycle skipped.");
                                         }
                                     }
                                 }
-                            }
 #if !DEBUG
-                        }
-                        catch
-                        {
-                            LPHPCompiler.PrintWarning("Compilation aborted. Please fix all errors shown above and try again.");
-                        }
+                            }
+                            catch
+                            {
+                                LPHPCompiler.PrintWarning("Compilation aborted. Please fix all errors shown above and try again.");
+                            }
 #endif
                         }
+
+                        //Thread.Sleep(100);
                     }
-                    Thread.Sleep(100);
                 }
+#if !DEBUG
             }
-            catch(Exception)
+            catch
             {
                 LPHPCompiler.PrintError("*** Error reading the directory ***");
                 LPHPCompiler.PrintError("Please make sure the given directory exists.");
@@ -121,6 +131,7 @@ namespace LPHP_Preprocessor
 
             Console.ReadKey();
             return;
+#endif
         }
     }
 }

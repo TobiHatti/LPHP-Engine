@@ -209,15 +209,16 @@ namespace LPHP_Preprocessor
 
         private static string LoadWithoutComments(string pFilePath)
         {
-            StreamReader sr = new StreamReader(pFilePath);
             StringBuilder sb = new StringBuilder();
-            string line;
+            using (StreamReader sr = new StreamReader(pFilePath))
+            {
+                string line;
 
-            // Read each line and remove comments
-            while ((line = sr.ReadLine()) != null)
-                sb.Append(Regex.Replace(line, @"\/\*[\s\S]*?\*\/|\/\/.*", ""));
-            sr.Close();
-
+                // Read each line and remove comments
+                while ((line = sr.ReadLine()) != null)
+                    sb.Append(Regex.Replace(line, @"\/\*[\s\S]*?\*\/|\/\/.*", ""));
+                sr.Close();
+            }
             return sb.ToString();
         }
 
@@ -314,11 +315,13 @@ namespace LPHP_Preprocessor
 
             string targetFile = Path.Combine(Path.GetDirectoryName(pOriginalFilename), Path.GetFileNameWithoutExtension(pOriginalFilename) + ".php");
 
-            StreamWriter sw = new StreamWriter(targetFile);
-            if (minOutput) sw.WriteLine(pFileContent);
-            // TODO
-            else sw.WriteLine(pFileContent);
-            sw.Close();
+            using (StreamWriter sw = new StreamWriter(targetFile))
+            {
+                if (minOutput) sw.WriteLine(pFileContent);
+                // TODO
+                else sw.WriteLine(pFileContent);
+                sw.Close();
+            }
         }
 
         private static object ValueParser(string pVariableValue)
