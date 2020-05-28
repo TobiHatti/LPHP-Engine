@@ -332,7 +332,7 @@ namespace LPHP_Preprocessor
                     }
 
                     // Check if pdp-tag is active, check common end-char (runtime-improvement), check for exact end-tag
-                    if ((phpATagActive || phpBTagActive) && pFileContent[i] == commonEndChar && pFileContent.Substring(i - phpEndTagLength, phpEndTagLength) == phpEndTag)
+                    if ((phpATagActive || phpBTagActive) && pFileContent[i - phpEndTagLength] == commonEndChar && pFileContent.Substring(i - phpEndTagLength, phpEndTagLength) == phpEndTag)
                     {
                         if (phpATagActive) phpATagActive = false;
                         if (phpBTagActive) phpBTagActive = false;
@@ -344,11 +344,13 @@ namespace LPHP_Preprocessor
                 {
                     // Skip duplicate whitespaces
                     if(!(pFileContent[i] == ' ' && lastChar == ' ')) sb.Append(pFileContent[i]);
+                    lastChar = pFileContent[i];
                 }
                 else sb.Append(pFileContent[i]);
 
-                lastChar = pFileContent[i];
             }
+
+            //Console.WriteLine(sb.ToString());
 
             return sb.ToString();
         }
