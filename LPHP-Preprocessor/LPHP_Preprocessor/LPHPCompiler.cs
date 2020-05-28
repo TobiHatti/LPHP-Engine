@@ -270,8 +270,6 @@ namespace LPHP_Preprocessor
                 sr.Close();
             }
 
-           
-
             return sb.ToString();
         }
 
@@ -295,35 +293,61 @@ namespace LPHP_Preprocessor
             string phpBTestTag = "<?=";
             string phpEndTag = "?>";
 
+            char commonStartChar = '<'; // <?php, <?=
+            char commonEndChar = '?';    // ?>
+
+            int phpATestTagLength = phpATestTag.Length;
+            int phpBTestTagLength = phpBTestTag.Length;
+            int phpEndTagLength = phpEndTag.Length;
+
+            int longestTestTag = Math.Max(phpATestTagLength, Math.Max(phpBTestTagLength, phpEndTagLength));
+
             char lastChar = '\0';
+
+            int remainingContentLength = 0;
+
+
+            // Note: SubString is slow. Really. Slow.
 
             StringBuilder sb = new StringBuilder();
 
             for(int i = 0; i < pFileContent.Length; i++)
             {
-                if (pFileContent.Substring(i).Length >= phpATestTag.Length &&
-                   pFileContent.Substring(i).Length >= phpBTestTag.Length &&
-                   pFileContent.Substring(i).Length >= phpEndTag.Length)
+                // Calculate remaining length
+                remainingContentLength = pFileContent.Length - i;
+
+                // Test if checks can still be made
+                if (remainingContentLength >= longestTestTag)
                 {
+                    // Check if php-tag is active
                     if (!phpATagActive && !phpBTagActive)
                     {
-                        if (pFileContent.Substring(i, phpATestTag.Length) == phpATestTag) phpATagActive = true;
-                        if (pFileContent.Substring(i, phpBTestTag.Length) == phpBTestTag) phpBTagActive = true;
+                        // Check if common tag is set (runtime-improvement)
+                        if (pFileContent[i] == commonStartChar)
+                        {
+                            // Check for tag-starts
+                            if (pFileContent.Substring(i, phpATestTagLength) == phpATestTag) phpATagActive = true;
+                            else if (pFileContent.Substring(i, phpBTestTagLength) == phpBTestTag) phpBTagActive = true;
+                        }
                     }
 
-                    if ((phpATagActive || phpBTagActive) && pFileContent.Substring(i - phpEndTag.Length, phpEndTag.Length) == phpEndTag)
+                    // Check if pdp-tag is active, check common end-char (runtime-improvement), check for exact end-tag
+                    if ((phpATagActive || phpBTagActive) && pFileContent[i] == commonEndChar && pFileContent.Substring(i - phpEndTagLength, phpEndTagLength) == phpEndTag)
                     {
                         if (phpATagActive) phpATagActive = false;
                         if (phpBTagActive) phpBTagActive = false;
                     }
                 }
-
+     
+                // Check if php-tag active
                 if(!phpATagActive && !phpBTagActive)
                 {
+                    // Skip duplicate whitespaces
                     if(!(pFileContent[i] == ' ' && lastChar == ' ')) sb.Append(pFileContent[i]);
-                    lastChar = pFileContent[i];
                 }
                 else sb.Append(pFileContent[i]);
+
+                lastChar = pFileContent[i];
             }
 
             return sb.ToString();

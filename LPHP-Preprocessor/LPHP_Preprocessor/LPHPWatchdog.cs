@@ -52,7 +52,7 @@ namespace LPHP_Preprocessor
             }
 
 #if DEBUG
-            watchFolder = @"H:\LPHPTest";
+            watchFolder = @"H:\Git\Endev-Web\PHP-Final\EndevWebsite";
 #endif
 #if !DEBUG
             try
