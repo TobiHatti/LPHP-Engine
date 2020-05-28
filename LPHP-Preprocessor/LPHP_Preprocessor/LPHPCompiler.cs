@@ -70,6 +70,9 @@ namespace LPHP_Preprocessor
                 // Set global variables
                 fileContent = SetGlobalVariables(fileContent);
 
+                // Remove tabs, linebreaks and unneccecary whitespaces
+                fileContent = SourceCleanup(fileContent);
+
                 // Save the file
                 SaveFile(file.Key, fileContent);
             }
@@ -94,9 +97,7 @@ namespace LPHP_Preprocessor
             string fileContent = LoadWithoutComments(pFilePath);
             currentCompileFile = pFilePath;
 
-            // Remove tabs and linebreaks
-            fileContent = SourceCleanup(fileContent);
-            currentCompileFile = pFilePath;
+            
 
             // Extract header-instructions
             fileContent = ExtractHeaderInstructions(fileContent, out string layout);
@@ -109,6 +110,8 @@ namespace LPHP_Preprocessor
             // Load RenderPages into source-file
             fileContent = LoadRenderPages(fileContent, pFilePath);
             currentCompileFile = pFilePath;
+
+
 
             return fileContent;
         }
@@ -263,24 +266,67 @@ namespace LPHP_Preprocessor
 
                 // Read each line and remove comments
                 while ((line = sr.ReadLine()) != null)
-                    sb.Append(Regex.Replace(line, @"\/\*[\s\S]*?\*\/|\/\/.*", ""));
+                    sb.Append(Regex.Replace(line, @"\/\*[\s\S]*?\*\/|\/\/.*", "") + " ");
                 sr.Close();
             }
+
+           
+
             return sb.ToString();
         }
 
         private static string SourceCleanup(string rawFileContent)
         {
             // Remove tabs and linebreaks
-            string cleanedContent = rawFileContent.Replace("\t", "").Replace("\r\n", " "); ;
+            string cleanedContent = rawFileContent.Replace("\t", " ").Replace("\r\n", " ");
 
-            bool removeDuplicateWS = false;
-
-            if(removeDuplicateWS)
-                while (cleanedContent.Contains("  "))
-                    cleanedContent = cleanedContent.Replace("  ", " ");
+            // Remove double WS (HTML-Part only)
+            cleanedContent = WSReplace(cleanedContent);
 
             return cleanedContent;
+        }
+
+        private static string WSReplace(string pFileContent)
+        {
+            bool phpATagActive = false; // <?php ?>
+            bool phpBTagActive = false; // <?= ?>
+
+            string phpATestTag = "<?php";
+            string phpBTestTag = "<?=";
+            string phpEndTag = "?>";
+
+            char lastChar = '\0';
+
+            StringBuilder sb = new StringBuilder();
+
+            for(int i = 0; i < pFileContent.Length; i++)
+            {
+                if (pFileContent.Substring(i).Length >= phpATestTag.Length &&
+                   pFileContent.Substring(i).Length >= phpBTestTag.Length &&
+                   pFileContent.Substring(i).Length >= phpEndTag.Length)
+                {
+                    if (!phpATagActive && !phpBTagActive)
+                    {
+                        if (pFileContent.Substring(i, phpATestTag.Length) == phpATestTag) phpATagActive = true;
+                        if (pFileContent.Substring(i, phpBTestTag.Length) == phpBTestTag) phpBTagActive = true;
+                    }
+
+                    if ((phpATagActive || phpBTagActive) && pFileContent.Substring(i - phpEndTag.Length, phpEndTag.Length) == phpEndTag)
+                    {
+                        if (phpATagActive) phpATagActive = false;
+                        if (phpBTagActive) phpBTagActive = false;
+                    }
+                }
+
+                if(!phpATagActive && !phpBTagActive)
+                {
+                    if(!(pFileContent[i] == ' ' && lastChar == ' ')) sb.Append(pFileContent[i]);
+                    lastChar = pFileContent[i];
+                }
+                else sb.Append(pFileContent[i]);
+            }
+
+            return sb.ToString();
         }
 
         private static string ExtractHeaderInstructions(string pFileContent, out string layoutFile)

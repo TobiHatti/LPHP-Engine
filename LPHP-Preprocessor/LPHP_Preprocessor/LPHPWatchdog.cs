@@ -50,9 +50,9 @@ namespace LPHP_Preprocessor
                 LPHPCompiler.PrintError("*** LPHP Startup Error ***");
                 LPHPCompiler.PrintError("Please provide a path to the target folder and try again.");
             }
-       
+
 #if DEBUG
-            watchFolder = @"---";
+            watchFolder = @"H:\LPHPTest";
 #endif
 #if !DEBUG
             try
