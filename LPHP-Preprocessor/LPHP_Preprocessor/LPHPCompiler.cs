@@ -272,7 +272,15 @@ namespace LPHP_Preprocessor
         private static string SourceCleanup(string rawFileContent)
         {
             // Remove tabs and linebreaks
-            return rawFileContent.Replace("\t", "").Replace("\r\n", "");
+            string cleanedContent = rawFileContent.Replace("\t", "").Replace("\r\n", " "); ;
+
+            bool removeDuplicateWS = false;
+
+            if(removeDuplicateWS)
+                while (cleanedContent.Contains("  "))
+                    cleanedContent = cleanedContent.Replace("  ", " ");
+
+            return cleanedContent;
         }
 
         private static string ExtractHeaderInstructions(string pFileContent, out string layoutFile)
