@@ -286,71 +286,56 @@ namespace LPHP_Preprocessor
 
         private static string WSReplace(string pFileContent)
         {
-            bool phpATagActive = false; // <?php ?>
-            bool phpBTagActive = false; // <?= ?>
+            Dictionary<int, Tuple<string, string>> beatufifyFlags = new Dictionary<int, Tuple<string, string>>();
 
-            string phpATestTag = "<?php";
-            string phpBTestTag = "<?=";
-            string phpEndTag = "?>";
+            beatufifyFlags.Add(0, new Tuple<string, string>("<?php", "?>"));
+            beatufifyFlags.Add(1, new Tuple<string, string>("<?=", "?>"));
+            beatufifyFlags.Add(2, new Tuple<string, string>("<script", "</script>"));
 
-            char commonStartChar = '<'; // <?php, <?=
-            char commonEndChar = '?';    // ?>
-
-            int phpATestTagLength = phpATestTag.Length;
-            int phpBTestTagLength = phpBTestTag.Length;
-            int phpEndTagLength = phpEndTag.Length;
-
-            int longestTestTag = Math.Max(phpATestTagLength, Math.Max(phpBTestTagLength, phpEndTagLength));
-
-            char lastChar = '\0';
-
-            int remainingContentLength = 0;
-
-
-            // Note: SubString is slow. Really. Slow.
 
             StringBuilder sb = new StringBuilder();
 
-            for(int i = 0; i < pFileContent.Length; i++)
-            {
-                // Calculate remaining length
-                remainingContentLength = pFileContent.Length - i;
+            int activeFlag = -1;
+            char lastChar = '\0';
 
-                // Test if checks can still be made
-                if (remainingContentLength >= longestTestTag)
+            for (int i = 0; i < pFileContent.Length; i++)
+            {
+                int remainingSourceLength = pFileContent.Length - i;
+
+                if (activeFlag == -1)
                 {
-                    // Check if php-tag is active
-                    if (!phpATagActive && !phpBTagActive)
+                    foreach (KeyValuePair<int, Tuple<string, string>> flag in beatufifyFlags)
                     {
-                        // Check if common tag is set (runtime-improvement)
-                        if (pFileContent[i] == commonStartChar)
+                        if (remainingSourceLength >= flag.Value.Item1.Length)
                         {
-                            // Check for tag-starts
-                            if (pFileContent.Substring(i, phpATestTagLength) == phpATestTag) phpATagActive = true;
-                            else if (pFileContent.Substring(i, phpBTestTagLength) == phpBTestTag) phpBTagActive = true;
+                            if (flag.Value.Item1[0] == pFileContent[i])
+                            {
+                                if (pFileContent.Substring(i, flag.Value.Item1.Length) == flag.Value.Item1)
+                                {
+                                    activeFlag = flag.Key;
+                                }
+                            }
                         }
                     }
-
-                    // Check if pdp-tag is active, check common end-char (runtime-improvement), check for exact end-tag
-                    if ((phpATagActive || phpBTagActive) && pFileContent[i - phpEndTagLength] == commonEndChar && pFileContent.Substring(i - phpEndTagLength, phpEndTagLength) == phpEndTag)
+                }
+                else
+                {
+                    if(beatufifyFlags[activeFlag].Item2[0] == pFileContent[i])
                     {
-                        if (phpATagActive) phpATagActive = false;
-                        if (phpBTagActive) phpBTagActive = false;
+                        if (pFileContent.Substring(i, beatufifyFlags[activeFlag].Item2.Length) == beatufifyFlags[activeFlag].Item2)
+                        {
+                            activeFlag = -1;
+                        }
                     }
                 }
-     
-                // Check if php-tag active
-                if(!phpATagActive && !phpBTagActive)
+
+                if(activeFlag == -1)
                 {
-                    // Skip duplicate whitespaces
-                    if(!(pFileContent[i] == ' ' && lastChar == ' ')) sb.Append(pFileContent[i]);
+                    if (!(pFileContent[i] == ' ' && lastChar == ' ')) sb.Append(pFileContent[i]);
                     lastChar = pFileContent[i];
                 }
-                else sb.Append(pFileContent[i]);
-
+                else sb.Append(pFileContent[i]);               
             }
-
-            //Console.WriteLine(sb.ToString());
 
             return sb.ToString();
         }

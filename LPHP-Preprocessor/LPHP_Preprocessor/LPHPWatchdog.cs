@@ -121,10 +121,13 @@ namespace LPHP_Preprocessor
                             }
 #endif
                         }
-
+#if DEBUG
+                        Thread.Sleep(500);
+#else
                         Thread.Sleep(100);
-                    }
+#endif
                 }
+            }
 #if !DEBUG
             }
             catch
