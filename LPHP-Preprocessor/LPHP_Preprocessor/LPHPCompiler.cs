@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,6 +14,22 @@ namespace LPHP_Preprocessor
 {
     public class LPHPCompiler
     {
+        /// <summary>
+        /// Removes HTML-Tags (<!-- -->) from the output
+        /// </summary>
+        private static bool COMP_REMOVE_HTML_COMMENTS { get; set; } = true;
+
+        /// <summary>
+        /// Enable Min-Output (*.min.php)
+        /// </summary>
+        private static bool COMP_MIN_OUTPUT_ENABLED { get; set; } = true;
+
+        /// <summary>
+        /// Enable XML-Foramted output with linebreaks and indents
+        /// </summary>
+        private static bool COMP_XML_OUTPUT_ENABLED { get; set; } = false;
+
+
         private static readonly List<string> instructionSessionBuffer = new List<string>();
         private static readonly Dictionary<string, string> fileBuffer = new Dictionary<string, string>();
         private static readonly Dictionary<string, object> localVariables = new Dictionary<string, object>();
@@ -278,6 +295,10 @@ namespace LPHP_Preprocessor
             // Remove tabs and linebreaks
             string cleanedContent = rawFileContent.Replace("\t", " ").Replace("\r\n", " ");
 
+            // Remove HTML-Comments, if compiler-flag is set
+            if(COMP_REMOVE_HTML_COMMENTS)
+                cleanedContent = Regex.Replace(cleanedContent, @"\<\!\-\-[\S\s]*?\-\-\>", "");
+
             // Remove double WS (HTML-Part only)
             cleanedContent = WSReplace(cleanedContent);
 
@@ -425,16 +446,31 @@ namespace LPHP_Preprocessor
 
         private static void SaveFile(string pOriginalFilename, string pFileContent)
         {
-            bool minOutput = true;
+            string targetFileXML = Path.Combine(Path.GetDirectoryName(pOriginalFilename), Path.GetFileNameWithoutExtension(pOriginalFilename) + ".php");
+            string targetFileMIN = Path.Combine(Path.GetDirectoryName(pOriginalFilename), Path.GetFileNameWithoutExtension(pOriginalFilename) + ".min.php");
 
-            string targetFile = Path.Combine(Path.GetDirectoryName(pOriginalFilename), Path.GetFileNameWithoutExtension(pOriginalFilename) + ".php");
-
-            using (StreamWriter sw = new StreamWriter(targetFile))
+            string selectedFileExt;
+            if (COMP_MIN_OUTPUT_ENABLED)
             {
-                if (minOutput) sw.WriteLine(pFileContent);
-                // TODO
-                else sw.WriteLine(pFileContent);
-                sw.Close();
+                // If only min is selected, no min gets added to the extension
+                if (COMP_XML_OUTPUT_ENABLED) selectedFileExt = targetFileMIN;
+                else selectedFileExt = targetFileXML;
+
+                using (StreamWriter sw = new StreamWriter(selectedFileExt))
+                {
+                    sw.Write(pFileContent);
+                    sw.Close();
+                }
+            }
+
+            // TODO: Output XML-Formated document
+            if (COMP_XML_OUTPUT_ENABLED)
+            {
+                using (StreamWriter sw = new StreamWriter(targetFileXML))
+                {
+                    sw.Write(pFileContent);
+                    sw.Close();
+                }
             }
         }
 
