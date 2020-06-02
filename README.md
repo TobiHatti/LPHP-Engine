@@ -1,6 +1,6 @@
 <img align="right" width="80" height="80" src="https://github.com/TobiHatti/LPHP-Engine/blob/master/Images/LPHP_Logo.png">
 
-# LPHP-Engine - $$
+# LPHP-Engine v0.1.1
 ![GitHub](https://img.shields.io/github/license/TobiHatti/LPHP-Engine)
 [![GitHub Release Date](https://img.shields.io/github/release-date/TobiHatti/LPHP-Engine?include_prereleases)](https://github.com/TobiHatti/LPHP-Engine/releases)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/TobiHatti/LPHP-Engine?include_prereleases)](https://github.com/TobiHatti/LPHP-Engine/releases)
