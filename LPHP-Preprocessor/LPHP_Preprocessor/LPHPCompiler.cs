@@ -276,17 +276,36 @@ namespace LPHP_Preprocessor
 
         private static string LoadWithoutComments(string pFilePath)
         {
-            StringBuilder sb = new StringBuilder();
+            string fileContent;
             using (StreamReader sr = new StreamReader(pFilePath))
             {
-                string line;
+                fileContent = sr.ReadToEnd();
 
-                // Read each line and remove comments
-                while ((line = sr.ReadLine()) != null)
-                    sb.Append(Regex.Replace(line, @"\/\*[\s\S]*?\*\/|\/\/.*", "") + " ");
+                // Replace LPHP-Comments
+                foreach (Match match in Regex.Matches(fileContent, @"\$\$\{[\S\s]*?\}"))
+                    foreach (Match comment in Regex.Matches(match.Value, @"(?<=\$\$\{[\S\s]*?)((?<!(https?|ftp):)(\/\/[\S\s]*?)|(\/\*[\S\s]*?\*\/))(?=\n[\S\s]*?\})"))
+                        fileContent = ReplaceFromPosition(fileContent, match.Index + comment.Index, comment.Value.Length, ' ');
+
+                // Replace PHP-Comments
+                foreach (Match match in Regex.Matches(fileContent, @"\<\?php[\S\s]*?\?\>"))
+                    foreach (Match comment in Regex.Matches(match.Value, @"(?<=\<\?php[\S\s]*?)((?<!(https?|ftp):)(\/\/[\S\s]*?)|(\/\*[\S\s]*?\*\/))(?=\n[\S\s]*?\?\>)"))
+                        fileContent = ReplaceFromPosition(fileContent, match.Index + comment.Index, comment.Value.Length, ' ');
+
+                // Remove HTML-Comments, if compiler-flag is set
+                if (COMP_REMOVE_HTML_COMMENTS)
+                    fileContent = Regex.Replace(fileContent, @"\<\!\-\-[\S\s]*?\-\-\>", "");
+
                 sr.Close();
             }
 
+            return fileContent;
+        }
+
+        private static string ReplaceFromPosition(string pFileContent, int startIndex, int length, char replaceChar)
+        {
+            StringBuilder sb = new StringBuilder(pFileContent);
+            sb.Remove(startIndex, length);
+            sb.Insert(startIndex, new String(' ', length));
             return sb.ToString();
         }
 
@@ -294,10 +313,6 @@ namespace LPHP_Preprocessor
         {
             // Remove tabs and linebreaks
             string cleanedContent = rawFileContent.Replace("\t", " ").Replace("\r\n", " ");
-
-            // Remove HTML-Comments, if compiler-flag is set
-            if(COMP_REMOVE_HTML_COMMENTS)
-                cleanedContent = Regex.Replace(cleanedContent, @"\<\!\-\-[\S\s]*?\-\-\>", "");
 
             // Remove double WS (HTML-Part only)
             cleanedContent = WSReplace(cleanedContent);
