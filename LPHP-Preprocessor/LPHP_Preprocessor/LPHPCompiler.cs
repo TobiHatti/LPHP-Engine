@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -30,12 +31,59 @@ namespace LPHP_Preprocessor
         private static bool COMP_XML_OUTPUT_ENABLED { get; set; } = false;
 
 
+        private static Dictionary<string, object> COMPOPT = null;
+
         private static readonly List<string> instructionSessionBuffer = new List<string>();
         private static readonly Dictionary<string, string> fileBuffer = new Dictionary<string, string>();
         private static readonly Dictionary<string, object> localVariables = new Dictionary<string, object>();
         private static readonly Dictionary<string, object> globalVariables = new Dictionary<string, object>();
 
         private static string currentCompileFile = "";
+
+        public static void Init()
+        {
+            COMPOPT = new Dictionary<string, object>
+            {
+                { "REMOVE_HTML_COMMENTS", true },
+                { "MIN_OUTPUT_ENABLED", true },
+                { "XML_OUTPUT_ENABLED", false }
+            };
+
+            if (!File.Exists("LPHP.ini"))
+            {
+                using (StreamWriter sw = new StreamWriter("LPHP.ini"))
+                {
+                    foreach (KeyValuePair<string, object> entry in COMPOPT)
+                        sw.WriteLine($"{entry.Key}={entry.Value}");
+                    sw.Close();
+                }
+            }
+            else
+            {
+                using (StreamReader sr = new StreamReader("LPHP.ini"))
+                {
+                    string line;
+                    while((line = sr.ReadLine()) != null)
+                    {
+                        if (!string.IsNullOrEmpty(line))
+                        {
+                            string[] keyValueEntry = line.Split('=');
+                            try
+                            {
+                                COMPOPT[keyValueEntry[0]] = Convert.ChangeType(keyValueEntry[1], COMPOPT[keyValueEntry[0]].GetType());
+                            }
+                            catch
+                            {
+                                PrintError("*** Error in \"LPHP.ini\" ***");
+                                PrintError("Unknown key: " + keyValueEntry[0]);
+                                PrintError("Please check or delete the config-file and restart the program.");
+                                throw new ApplicationException();
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         public static void Run(Dictionary<string, string> lphpFiles)
         {
@@ -292,7 +340,7 @@ namespace LPHP_Preprocessor
                         fileContent = ReplaceFromPosition(fileContent, match.Index + comment.Index, comment.Value.Length, ' ');
 
                 // Remove HTML-Comments, if compiler-flag is set
-                if (COMP_REMOVE_HTML_COMMENTS)
+                if ((bool)COMPOPT["REMOVE_HTML_COMMENTS"])
                     fileContent = Regex.Replace(fileContent, @"\<\!\-\-[\S\s]*?\-\-\>", "");
 
                 sr.Close();
@@ -464,11 +512,18 @@ namespace LPHP_Preprocessor
             string targetFileXML = Path.Combine(Path.GetDirectoryName(pOriginalFilename), Path.GetFileNameWithoutExtension(pOriginalFilename) + ".php");
             string targetFileMIN = Path.Combine(Path.GetDirectoryName(pOriginalFilename), Path.GetFileNameWithoutExtension(pOriginalFilename) + ".min.php");
 
+            // Delete old, unused generated php files
+            try { File.Delete(targetFileXML); } catch { }
+            try { File.Delete(targetFileMIN); } catch { }
+
+            bool fileGenerated = false;
+
+
             string selectedFileExt;
-            if (COMP_MIN_OUTPUT_ENABLED)
+            if ((bool)COMPOPT["MIN_OUTPUT_ENABLED"])
             {
                 // If only min is selected, no min gets added to the extension
-                if (COMP_XML_OUTPUT_ENABLED) selectedFileExt = targetFileMIN;
+                if ((bool)COMPOPT["XML_OUTPUT_ENABLED"]) selectedFileExt = targetFileMIN;
                 else selectedFileExt = targetFileXML;
 
                 using (StreamWriter sw = new StreamWriter(selectedFileExt))
@@ -476,16 +531,27 @@ namespace LPHP_Preprocessor
                     sw.Write(pFileContent);
                     sw.Close();
                 }
+
+                fileGenerated = true;
             }
 
             // TODO: Output XML-Formated document
-            if (COMP_XML_OUTPUT_ENABLED)
+            if ((bool)COMPOPT["XML_OUTPUT_ENABLED"])
             {
                 using (StreamWriter sw = new StreamWriter(targetFileXML))
                 {
                     sw.Write(pFileContent);
                     sw.Close();
                 }
+
+                fileGenerated = true;
+            }
+
+            if(!fileGenerated)
+            {
+                PrintError("Warning: No Output-Type selected!");
+                PrintError("Please set MIN_OUTPUT_ENABLED and/or XML_OUTPUT_ENABLED to \"True\" in LPHP.ini");
+                throw new ApplicationException();
             }
         }
 

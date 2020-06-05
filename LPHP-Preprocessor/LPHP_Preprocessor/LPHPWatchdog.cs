@@ -51,10 +51,23 @@ namespace LPHP_Preprocessor
                 LPHPCompiler.PrintError("Please provide a path to the target folder and try again.");
             }
 
+            try
+            { 
+                LPHPCompiler.Init();
+            }
+            catch
+            {
+                Console.ReadKey();
+                return;
+            }
+
 #if DEBUG
             watchFolder = @"H:\Git\Endev-Web\PHP-Final\EndevWebsite";
 #endif
 #if !DEBUG
+
+            
+
             try
             {
 #endif
