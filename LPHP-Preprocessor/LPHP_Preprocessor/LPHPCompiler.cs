@@ -15,22 +15,6 @@ namespace LPHP_Preprocessor
 {
     public class LPHPCompiler
     {
-        /// <summary>
-        /// Removes HTML-Tags (<!-- -->) from the output
-        /// </summary>
-        private static bool COMP_REMOVE_HTML_COMMENTS { get; set; } = true;
-
-        /// <summary>
-        /// Enable Min-Output (*.min.php)
-        /// </summary>
-        private static bool COMP_MIN_OUTPUT_ENABLED { get; set; } = true;
-
-        /// <summary>
-        /// Enable XML-Foramted output with linebreaks and indents
-        /// </summary>
-        private static bool COMP_XML_OUTPUT_ENABLED { get; set; } = false;
-
-
         private static Dictionary<string, object> COMPOPT = null;
 
         private static readonly List<string> instructionSessionBuffer = new List<string>();
@@ -517,7 +501,6 @@ namespace LPHP_Preprocessor
             try { File.Delete(targetFileMIN); } catch { }
 
             bool fileGenerated = false;
-
 
             string selectedFileExt;
             if ((bool)COMPOPT["MIN_OUTPUT_ENABLED"])

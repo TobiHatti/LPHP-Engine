@@ -18,19 +18,21 @@ namespace LPHP_Preprocessor
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("=================================================");
-            Console.WriteLine("                LPHP Preprocessor                ");
-            Console.WriteLine("               Version " + typeof(LPHPCompiler).Assembly.GetName().Version.ToString(3) + " ALPHA");
-            Console.WriteLine("       (c) Copyright 2020 Tobias Hattinger       ");
-            Console.WriteLine("                                                 ");
-            Console.WriteLine("                      Visit                      ");
+            Console.WriteLine("=====================================================");
+            Console.WriteLine("*                 LPHP Preprocessor                 *");
+            Console.WriteLine("*                Version " + typeof(LPHPCompiler).Assembly.GetName().Version.ToString(3) + " ALPHA                *");
+            Console.WriteLine("*        (c) Copyright 2020 Tobias Hattinger        *");
+            Console.WriteLine("*                                                   *");
+            Console.WriteLine("*                       Visit                       *");
+            Console.Write("* ");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.BackgroundColor = ConsoleColor.Gray;
-            Console.WriteLine("https://github.com/TobiHatti/LPHP-Engine/releases");
+            Console.Write("https://github.com/TobiHatti/LPHP-Engine/releases");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine("                   for updates                   ");
-            Console.WriteLine("=================================================\r\n\r\n");
+            Console.WriteLine(" *");
+            Console.WriteLine("*                    for updates                    *");
+            Console.WriteLine("=====================================================\r\n\r\n");
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -62,7 +64,7 @@ namespace LPHP_Preprocessor
             }
 
 #if DEBUG
-            watchFolder = @"H:\Git\Endev-Web\PHP-Final\EndevWebsite";
+            watchFolder = @"...";
 #endif
 #if !DEBUG
 
