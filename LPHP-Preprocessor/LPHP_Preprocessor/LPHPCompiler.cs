@@ -337,7 +337,7 @@ namespace LPHP_Preprocessor
         {
             StringBuilder sb = new StringBuilder(pFileContent);
             sb.Remove(startIndex, length);
-            sb.Insert(startIndex, new String(' ', length));
+            sb.Insert(startIndex, new String(replaceChar, length));
             return sb.ToString();
         }
 
@@ -354,11 +354,12 @@ namespace LPHP_Preprocessor
 
         private static string WSReplace(string pFileContent)
         {
-            Dictionary<int, Tuple<string, string>> beatufifyFlags = new Dictionary<int, Tuple<string, string>>();
-
-            beatufifyFlags.Add(0, new Tuple<string, string>("<?php", "?>"));
-            beatufifyFlags.Add(1, new Tuple<string, string>("<?=", "?>"));
-            beatufifyFlags.Add(2, new Tuple<string, string>("<script", "</script>"));
+            Dictionary<int, Tuple<string, string>> beatufifyFlags = new Dictionary<int, Tuple<string, string>>
+            {
+                { 0, new Tuple<string, string>("<?php", "?>") },
+                { 1, new Tuple<string, string>("<?=", "?>") },
+                { 2, new Tuple<string, string>("<script", "</script>") }
+            };
 
 
             StringBuilder sb = new StringBuilder();
@@ -541,8 +542,7 @@ namespace LPHP_Preprocessor
         private static void DeleteFile(string pOriginalFilename)
         {
             string targetFile = Path.Combine(Path.GetDirectoryName(pOriginalFilename), Path.GetFileNameWithoutExtension(pOriginalFilename) + ".php");
-
-            File.Delete(targetFile);
+            if (File.Exists(targetFile)) File.Delete(targetFile);
         }
 
         private static object ValueParser(string pVariableValue)
