@@ -1,4 +1,4 @@
-<img align="right" width="80" height="80" src="https://github.com/TobiHatti/LPHP-Engine/blob/master/Images/LPHP_Logo.png">
+<img align="right" width="80" height="80" data-rmimg src="https://endev.at/content/projects/LPHP/LPHP_Logo_128.png">
 
 # LPHP-Engine v0.1.1
 ![GitHub](https://img.shields.io/github/license/TobiHatti/LPHP-Engine)
@@ -8,10 +8,10 @@
 [![GitHub issues](https://img.shields.io/github/issues-raw/TobiHatti/LPHP-Engine)](https://github.com/TobiHatti/LPHP-Engine/issues)
 [![GitHub language count](https://img.shields.io/github/languages/count/TobiHatti/LPHP-Engine)](https://github.com/TobiHatti/LPHP-Engine)
 
+![image](https://endev.at/content/projects/LPHP/LPHP_Banner_1080.png)
+
 The LPHP-Engine (Layout-Based PHP-Engine) provides a minimalistic Layout-Engine for PHP. Based on the Layout-features of the ASP.NET Razor framework. 
 This allows you to create PHP-Based Websites with layouts, similar to Razor, without the need of a webserver that supports ASP.Net Websites.
-
-![image](https://endev.at/content/projects/LPHP/LPHP_Banner_1080.png)
 
 ## Features
 
@@ -108,7 +108,7 @@ Program-Call (Example):
 If everything was set up correctly, the preprocessor will constantly watch for changes in the 
 directory and compile any lphp-files where a change gets detected.
 
-![image](https://github.com/TobiHatti/LPHP-Engine/blob/master/Images/PreprocessorSample.png)
+![image](https://endev.at/content/projects/LPHP/projectImages/PreprocessorSample.png)
 
 ## Usage
 ### Creating a Layout-Page
