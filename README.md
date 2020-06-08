@@ -1,6 +1,6 @@
 <img align="right" width="80" height="80" data-rmimg src="https://endev.at/content/projects/LPHP/LPHP_Logo_128.png">
 
-# LPHP-Engine v0.1.1
+# LPHP-Engine v0.2.0
 ![GitHub](https://img.shields.io/github/license/TobiHatti/LPHP-Engine)
 [![GitHub Release Date](https://img.shields.io/github/release-date/TobiHatti/LPHP-Engine?include_prereleases)](https://github.com/TobiHatti/LPHP-Engine/releases)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/TobiHatti/LPHP-Engine?include_prereleases)](https://github.com/TobiHatti/LPHP-Engine/releases)
@@ -191,6 +191,14 @@ Pastes any files content in this section.
 - `NoCompile` (default: `false`): 
 Determines, if a LPHP file should be converted and saved as a PHP-file. Usually set to `true` in layout-pages.
 
+### Preprocessor-Options
+These options can be changed in the LPHP.ini-file (located in the same directory as the executable).
+- `REMOVE_HTML_COMMENTS` (default: `True`):
+Determines, if HTML-comments should still be included in the `.php` output.
+- `MIN_OUTPUT_ENABLED` (default: `True`): Outputs the `.php`-file without line-breaks, tabs or unneccecary white-spaces.
+- `XML_OUTPUT_ENABLED` (default: `False`, __WORK IN PROGRESS__) Outputs the .php-file with propper indents and line-breaks.
+
+__Note: When only one output mode (`MIN_OUTPUT_ENABLED`, `XML_OUTPUT_ENABLED`) is set to `True`, the file-extension will always be `.php`. When both output-modes are selected, the XML-output has the file-extension `.php` and the MIN-output `.min.php`__
 ## FAQ
 
 ### Q: When trying to run the programm, Windows-Defender pops up and stops me from running the program.
@@ -203,6 +211,6 @@ click on "More Info" and then on "Run anyway". Alternatively, you can just downl
 
 Get the current version [here](https://github.com/TobiHatti/LPHP-Engine/releases)
 
-Version: 0.1.1
+Version: 0.2.0
 
-MD5: B4C5024D77458077995E2223E24D04AE
+MD5: 7BA47D840BB06A06CB0A88EF9D4DDA64
