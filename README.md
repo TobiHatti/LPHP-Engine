@@ -8,7 +8,7 @@
 [![GitHub issues](https://img.shields.io/github/issues-raw/TobiHatti/LPHP-Engine)](https://github.com/TobiHatti/LPHP-Engine/issues)
 [![GitHub language count](https://img.shields.io/github/languages/count/TobiHatti/LPHP-Engine)](https://github.com/TobiHatti/LPHP-Engine)
 
-![image](https://endev.at/content/projects/LPHP/LPHP_Banner_1080.png)
+![image](https://endev.at/content/projects/LPHP/LPHP_Banner_300.png)
 
 The LPHP-Engine (Layout-Based PHP-Engine) provides a minimalistic Layout-Engine for PHP. Based on the Layout-features of the ASP.NET Razor framework. 
 This allows you to create PHP-Based Websites with layouts, similar to Razor, without the need of a webserver that supports ASP.Net Websites.
