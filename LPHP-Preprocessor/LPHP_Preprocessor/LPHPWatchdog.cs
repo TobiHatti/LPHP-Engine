@@ -14,9 +14,6 @@ namespace LPHP_Preprocessor
     {
         static void Main(string[] args)
         {
-            strng test = args[5];
-
-
             Console.Title = "LPHP Preprocessor - Version " + typeof(LPHPCompiler).Assembly.GetName().Version.ToString(3);
 
             Console.ForegroundColor = ConsoleColor.Cyan;
