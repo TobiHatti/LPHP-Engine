@@ -2,7 +2,7 @@
 
 # LPHP-Engine v0.2.0
 ![GitHub](https://img.shields.io/github/license/TobiHatti/LPHP-Engine)
-[![GitHub Release Date](https://img.shields.io/github/release-date/TobiHatti/LPHP-Engine?include_prereleases)](https://github.com/TobiHatti/LPHP-Engine/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date-pre/TobiHatti/LPHP-Engine?include_prereleases)](https://github.com/TobiHatti/LPHP-Engine/releases)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/TobiHatti/LPHP-Engine?include_prereleases)](https://github.com/TobiHatti/LPHP-Engine/releases)
 [![GitHub last commit](https://img.shields.io/github/last-commit/TobiHatti/LPHP-Engine)](https://github.com/TobiHatti/LPHP-Engine/commits/master)
 [![GitHub issues](https://img.shields.io/github/issues-raw/TobiHatti/LPHP-Engine)](https://github.com/TobiHatti/LPHP-Engine/issues)
