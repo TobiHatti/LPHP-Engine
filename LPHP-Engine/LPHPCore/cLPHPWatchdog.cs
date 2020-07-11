@@ -10,19 +10,31 @@ namespace LPHPCore
 {
     public class LPHPWatchdog
     {
-        public static string WatchFolder { get; set; } = null;
-
-        public static void Run()
+        /// <summary>
+        /// Constantly checks the given directory for changes and re-compiles as soon as a change is detected.
+        /// </summary>
+        /// <param name="pWatchFolder">Folder to watch</param>
+        public static void Run(string pWatchFolder)
         {
             try
             {
-                if (!string.IsNullOrEmpty(WatchFolder))
+                LPHPCompiler.Init();
+            }
+            catch
+            {
+                Console.ReadKey();
+                return;
+            }
+
+            try
+            {
+                if (!string.IsNullOrEmpty(pWatchFolder))
                 {
                     Dictionary<string, string> lphpFiles = new Dictionary<string, string>();
 
                     while (true)
                     {
-                        foreach (string filePath in Directory.EnumerateFiles(WatchFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (string filePath in Directory.EnumerateFiles(pWatchFolder, "*.*", SearchOption.AllDirectories))
                         {
                             try
                             {
@@ -69,6 +81,11 @@ namespace LPHPCore
                         Thread.Sleep(100);
                     }
                 }
+                else
+                {
+                    LPHPDebugger.PrintError("*** LPHP Watchdog Error ***");
+                    LPHPDebugger.PrintError("Please provide a path to the target folder and try again.");
+                }
             }
             catch
             {
@@ -76,7 +93,6 @@ namespace LPHPCore
                 LPHPDebugger.PrintError("Please make sure the given directory exists.");
             }
 
-            Console.ReadKey();
             return;
         }
     }

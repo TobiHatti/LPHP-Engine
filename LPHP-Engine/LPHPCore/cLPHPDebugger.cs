@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace LPHPCore
 {
@@ -25,6 +26,10 @@ namespace LPHPCore
         /// <param name="pType">Messagetype</param>
         public delegate void Print(string pMessage, LPHPMessageType pType);
 
+        /// <summary>
+        /// Flag to create a log file with detailed compiler-output
+        /// </summary>
+        public static bool CreateLogFile { get; set; } = true;
 
         private static Print printDebug = null;
 
@@ -35,18 +40,11 @@ namespace LPHPCore
         {
             get
             {
-                if (printDebug == null) return LPHPBlankOutput;
+                if (printDebug == null) return DebugOutputs.None;
                 else return printDebug;
             }
             set => printDebug = value;
         }
-
-        /// <summary>
-        /// Print-Delegate to disable all log and debug information.
-        /// </summary>
-        /// <param name="pMessage">Message-string to be shown and logged</param>
-        /// <param name="pType">Messagetype</param>
-        private static void LPHPBlankOutput(string pMessage, LPHPMessageType pType) { }
 
         /// <summary>
         /// Prints and logs a generic message
@@ -75,5 +73,39 @@ namespace LPHPCore
         /// <param name="pMessage">Message-string to be shown and logged</param>
         public static void PrintError(string pMessage)
             => PrintDebug(pMessage, LPHPMessageType.LPHPError);
+
+        public class DebugOutputs
+        {
+            public static void None(string pMessage, LPHPMessageType pType) { }
+            public static void ToConsole(string pMessage, LPHPMessageType pType)
+            {
+                // Save previous console color
+                ConsoleColor foreColor = Console.ForegroundColor;
+                ConsoleColor backColor = Console.BackgroundColor;
+
+                // Custom console color style based on message-type
+                switch(pType)
+                {
+                    case LPHPMessageType.LPHPSuccess:
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.BackgroundColor = ConsoleColor.DarkGreen;
+                        break;
+                    case LPHPMessageType.LPHPWarning:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        break;
+                    case LPHPMessageType.LPHPError:
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.BackgroundColor = ConsoleColor.DarkRed;
+                        break;
+                }
+
+                // Output message
+                Console.WriteLine(pMessage);
+
+                // Reset to old console colors
+                Console.ForegroundColor = foreColor;
+                Console.BackgroundColor = backColor;
+            }
+        }
     }
 }

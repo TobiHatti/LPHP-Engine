@@ -1,0 +1,10 @@
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\bin\Debug\LPHPConsole.exe.config
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\bin\Debug\LPHPConsole.exe
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\bin\Debug\LPHPConsole.pdb
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\bin\Debug\LPHPCore.dll
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\bin\Debug\LPHPCore.pdb
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\obj\Debug\LPHPConsole.csprojAssemblyReference.cache
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\obj\Debug\LPHPConsole.csproj.CoreCompileInputs.cache
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\obj\Debug\LPHPConsole.csproj.CopyComplete
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\obj\Debug\LPHPConsole.exe
+H:\Git\LPHP\LPHP-Engine\LPHPConsole\obj\Debug\LPHPConsole.pdb

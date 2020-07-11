@@ -7,3 +7,12 @@ H:\Git\LPHP\LPHPCore\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.AssemblyInfo.cs
 H:\Git\LPHP\LPHPCore\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.csproj.CoreCompileInputs.cache
 H:\Git\LPHP\LPHPCore\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.dll
 H:\Git\LPHP\LPHPCore\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.pdb
+H:\Git\LPHP\LPHP-Engine\LPHPCore\bin\Debug\netstandard2.0\LPHPCore.deps.json
+H:\Git\LPHP\LPHP-Engine\LPHPCore\bin\Debug\netstandard2.0\LPHPCore.dll
+H:\Git\LPHP\LPHP-Engine\LPHPCore\bin\Debug\netstandard2.0\LPHPCore.pdb
+H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.csprojAssemblyReference.cache
+H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.AssemblyInfoInputs.cache
+H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.AssemblyInfo.cs
+H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.csproj.CoreCompileInputs.cache
+H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.dll
+H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.pdb
