@@ -20,7 +20,7 @@ namespace LPHP_UI
         public LPHP_UI()
         {
             InitializeComponent();
-            this.Style.Border = new Pen(Color.FromArgb(79, 93, 149), 2);
+            
             LPHPCompiler.DebugOutput = txbConsoleLog;
 
         }

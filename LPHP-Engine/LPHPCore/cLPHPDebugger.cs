@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Net;
 
 namespace LPHPCore
@@ -77,6 +79,12 @@ namespace LPHPCore
         public class DebugOutputs
         {
             public static void None(string pMessage, LPHPMessageType pType) { }
+            
+            public static void ToDebug(string pMessage, LPHPMessageType pType)
+            {
+                Debug.Print(pMessage);
+            }
+            
             public static void ToConsole(string pMessage, LPHPMessageType pType)
             {
                 // Save previous console color
