@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -58,9 +59,9 @@ namespace LPHP_Preprocessor
                             }
                             catch
                             {
-                                PrintError("*** Error in \"LPHP.ini\" ***");
-                                PrintError("Unknown key: " + keyValueEntry[0]);
-                                PrintError("Please check or delete the config-file and restart the program.");
+                                LPHPDebugger.PrintError("*** Error in \"LPHP.ini\" ***");
+                                LPHPDebugger.PrintError("Unknown key: " + keyValueEntry[0]);
+                                LPHPDebugger.PrintError("Please check or delete the config-file and restart the program.");
                                 throw new ApplicationException();
                             }
                         }
@@ -251,16 +252,16 @@ namespace LPHP_Preprocessor
                         pFileContent = layoutContent.Replace("$$RenderBody()", pFileContent);
                     else
                     {
-                        PrintError("*** Error in \"" + currentCompileFile + "\" ***");
-                        PrintError("RenderBody() doesn't get called! Layout-Pages require exactly one call to RenderBody()!");
+                        LPHPDebugger.PrintError("*** Error in \"" + currentCompileFile + "\" ***");
+                        LPHPDebugger.PrintError("RenderBody() doesn't get called! Layout-Pages require exactly one call to RenderBody()!");
                         throw new ApplicationException();
                     }
                 }
                 else
                 {
-                    PrintError("*** Error in \"" + currentCompileFile + "\" ***");
-                    PrintError("Could not load Layout-Page: ");
-                    PrintError("\"" + layoutFilePath + "\" does not exist.");
+                    LPHPDebugger.PrintError("*** Error in \"" + currentCompileFile + "\" ***");
+                    LPHPDebugger.PrintError("Could not load Layout-Page: ");
+                    LPHPDebugger.PrintError("\"" + layoutFilePath + "\" does not exist.");
                     throw new ApplicationException();
                 }
             }
@@ -296,9 +297,9 @@ namespace LPHP_Preprocessor
                     pFileContent = pFileContent.Replace(originalRenderPageCommand, LoadFile(renderPageFilePath));
                 else
                 {
-                    PrintError("*** Error in \"" + currentCompileFile + "\" ***");
-                    PrintError("Could not render Page: ");
-                    PrintError("\"" + renderPageFilePath + "\" does not exist.");
+                    LPHPDebugger.PrintError("*** Error in \"" + currentCompileFile + "\" ***");
+                    LPHPDebugger.PrintError("Could not render Page: ");
+                    LPHPDebugger.PrintError("\"" + renderPageFilePath + "\" does not exist.");
                     throw new ApplicationException();
                 }
             }
@@ -448,8 +449,8 @@ namespace LPHP_Preprocessor
                         localVariables.Add(varName, varValue);
                     else
                     {
-                        PrintWarning("Warning in " + currentCompileFile + ":");
-                        PrintWarning("Variable \"" + varName + "\" gets assigned more than once!");
+                        LPHPDebugger.PrintWarning("Warning in " + currentCompileFile + ":");
+                        LPHPDebugger.PrintWarning("Variable \"" + varName + "\" gets assigned more than once!");
                         throw new ApplicationException();
                     }
                 }
@@ -463,8 +464,8 @@ namespace LPHP_Preprocessor
                         globalVariables.Add(varName, varValue);
                     else
                     {
-                        PrintWarning("Warning in " + currentCompileFile + ":");
-                        PrintWarning("Global variable \"" + varName + "\" gets assigned more than once!");
+                        LPHPDebugger.PrintWarning("Warning in " + currentCompileFile + ":");
+                        LPHPDebugger.PrintWarning("Global variable \"" + varName + "\" gets assigned more than once!");
                         throw new ApplicationException();
                     }
 
@@ -480,8 +481,8 @@ namespace LPHP_Preprocessor
                 // Invalid instruction
                 else
                 {
-                    PrintError("*** Error in \"" + currentCompileFile + "\" ***");
-                    PrintError($"Unknown instruction: \"{instruction}\"");
+                    LPHPDebugger.PrintError("*** Error in \"" + currentCompileFile + "\" ***");
+                    LPHPDebugger.PrintError($"Unknown instruction: \"{instruction}\"");
                     throw new ApplicationException();
                 }
 
@@ -533,8 +534,8 @@ namespace LPHP_Preprocessor
 
             if(!fileGenerated)
             {
-                PrintError("Warning: No Output-Type selected!");
-                PrintError("Please set MIN_OUTPUT_ENABLED and/or XML_OUTPUT_ENABLED to \"True\" in LPHP.ini");
+                LPHPDebugger.PrintError("Warning: No Output-Type selected!");
+                LPHPDebugger.PrintError("Please set MIN_OUTPUT_ENABLED and/or XML_OUTPUT_ENABLED to \"True\" in LPHP.ini");
                 throw new ApplicationException();
             }
         }
@@ -552,22 +553,6 @@ namespace LPHP_Preprocessor
             else if (pVariableValue.ToLower() == "false") return false;
             else if (decimal.TryParse(pVariableValue, out _)) return decimal.Parse(pVariableValue);
             else return pVariableValue;
-        }
-
-        public static void PrintWarning(string pMessage)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(pMessage);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
-
-        public static void PrintError(string pMessage)
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine(pMessage);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Black;
         }
     }
 }

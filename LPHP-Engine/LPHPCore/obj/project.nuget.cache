@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "WZ+5VY0+2r9C4swRlyGOUd3TPcHHxbeKld4qkSd7V7N1jph+SukanV5xEj/EM0GOe/rprnIFWiD6LUScK9xjFg==",
+  "success": true,
+  "projectFilePath": "H:\\Git\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj",
+  "expectedPackageFiles": [
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

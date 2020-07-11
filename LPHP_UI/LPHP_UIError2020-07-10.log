@@ -1,0 +1,11 @@
+
+
+Date:2020-07-10 16:45:47,443
+Thread:[1]
+Level:ERROR
+Logger:Syncfusion.TemplateWizard.Base.IWizardImplementation                         [(null)]
+Message:System.InvalidOperationException: Die Sammlung wurde geändert. Der Enumerationsvorgang kann möglicherweise nicht ausgeführt werden.
+   bei System.ThrowHelper.ThrowInvalidOperationException(ExceptionResource resource)
+   bei System.Collections.Generic.List`1.Enumerator.MoveNextRare()
+   bei System.Collections.Generic.List`1.Enumerator.MoveNext()
+   bei Syncfusion.TemplateWizard.Base.IWizardImplementation.RunFinished()

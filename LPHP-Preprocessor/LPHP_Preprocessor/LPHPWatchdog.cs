@@ -24,13 +24,13 @@ namespace LPHP_Preprocessor
             Console.WriteLine("*        (c) Copyright 2020 Tobias Hattinger        *");
             Console.WriteLine("*                                                   *");
             Console.WriteLine("*                       Visit                       *");
-            Console.Write("* ");
+            Console.Write("*              ");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.BackgroundColor = ConsoleColor.Gray;
-            Console.Write("https://github.com/TobiHatti/LPHP-Engine/releases");
+            Console.Write("https:/endev.at/p/LPHP");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine(" *");
+            Console.WriteLine("               *");
             Console.WriteLine("*                    for updates                    *");
             Console.WriteLine("=====================================================\r\n\r\n");
 
@@ -49,8 +49,8 @@ namespace LPHP_Preprocessor
             }
             catch(IndexOutOfRangeException)
             {
-                LPHPCompiler.PrintError("*** LPHP Startup Error ***");
-                LPHPCompiler.PrintError("Please provide a path to the target folder and try again.");
+                LPHPDebugger.PrintError("*** LPHP Startup Error ***");
+                LPHPDebugger.PrintError("Please provide a path to the target folder and try again.");
             }
 
             try
@@ -109,14 +109,9 @@ namespace LPHP_Preprocessor
 
                                                     lphpFiles.Add(md5Hash, filePath);
 
-                                                    Console.WriteLine($"\r\nChange detected in {filePath}...");
+                                                    LPHPDebugger.PrintMessage($"\r\nChange detected in {filePath}...");
                                                     LPHPCompiler.Run(lphpFiles);
-
-                                                    Console.BackgroundColor = ConsoleColor.DarkGreen;
-                                                    Console.ForegroundColor = ConsoleColor.White;
-                                                    Console.WriteLine($"Compiled successfully!");
-                                                    Console.BackgroundColor = ConsoleColor.Black;
-                                                    Console.ForegroundColor = ConsoleColor.White;
+                                                    LPHPDebugger.PrintSuccess($"Compiled successfully!");
                                                 }
                                             }
 #if !DEBUG

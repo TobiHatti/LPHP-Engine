@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LPHPCompiler.cs" />
+    <Compile Include="LPHPDebugger.cs" />
     <Compile Include="LPHPWatchdog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
