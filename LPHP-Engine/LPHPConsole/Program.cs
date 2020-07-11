@@ -16,6 +16,9 @@ namespace LPHPConsole
 
             ShowStartupBanner();
 
+            // Initialize LPHP-Compiler
+            LPHPCompiler.Init();
+
             // Set LPHP-Debug Mode
             LPHPDebugger.PrintDebug = LPHPDebugger.DebugOutputs.ToConsole;
 

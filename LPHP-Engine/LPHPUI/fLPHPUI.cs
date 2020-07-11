@@ -14,14 +14,12 @@ namespace LPHPUI
 {
     public partial class LPHPUI : SfForm
     {
-        private string watchDirectory = @"H:\Git\Endev-Web\PHP-Final\EndevWebsite";
         public LPHPUI()
         {
             InitializeComponent();
             this.Style.Border = new Pen(Color.FromArgb(79, 93, 149), 2);
             this.Style.InactiveBorder = new Pen(Color.FromArgb(101, 114, 172), 2);
-
-            
+            ShowStartupBanner();
         }
 
         private void LPHPUI_FormClosing(object sender, FormClosingEventArgs e)
@@ -30,16 +28,41 @@ namespace LPHPUI
                 bgwLPHPCompiler.CancelAsync();
         }
 
+        private void ShowStartupBanner()
+        {
+            AppendText("=====================================================", Color.Cyan);
+            AppendText("*                 LPHP Preprocessor                 *", Color.Cyan);
+            AppendText("*                Version " + typeof(LPHPCore.LPHPCompiler).Assembly.GetName().Version.ToString(3) + " ALPHA                *", Color.Cyan);
+            AppendText("*        (c) Copyright 2020 Tobias Hattinger        *", Color.Cyan);
+            AppendText("*                                                   *", Color.Cyan);
+            AppendText("*                       Visit                       *", Color.Cyan);
+            AppendText("*              https:/endev.at/p/LPHP               *", Color.Cyan);
+            AppendText("*                    for updates                    *", Color.Cyan);
+            AppendText("=====================================================\r\n\r\n", Color.Cyan);
+        }
+
         private void bgwLPHPCompiler_DoWork(object sender, DoWorkEventArgs e)
         {
+            // Initialize LPHP-Compiler
+            LPHPCompiler.Init();
+
+            // Initialize LPHP-Watchdog
+            LPHPWatchdog.Init();
+
             // Set LPHP-Debug Mode
             LPHPDebugger.PrintDebug = DebugToTxb;
 
             // Enable the creation of a log file
             LPHPDebugger.CreateLogFile = true;
+            while(true)
+            {
+                if (bgwLPHPCompiler.CancellationPending) 
+                    return;
 
-            // Run the LPHP-Watchdog on the given directory
-            LPHPWatchdog.Run(watchDirectory);
+                // Run the LPHP-Watchdog on the given directory
+                LPHPWatchdog.RunOnce(txbProjectDirectory.Text);
+            }
+            
         }
 
         private void DebugToTxb(string pMessage, LPHPMessageType pType)
@@ -90,6 +113,12 @@ namespace LPHPUI
                 bgwLPHPCompiler.RunWorkerAsync();
             else
                 AppendText("LPHP-Engine is already running", Color.OrangeRed);
+        }
+
+        private void btnStopPreprocessor_Click(object sender, EventArgs e)
+        {
+            AppendText("Stopping LPHP-Engine...", Color.OrangeRed);
+            bgwLPHPCompiler.CancelAsync();
         }
     }
 }
