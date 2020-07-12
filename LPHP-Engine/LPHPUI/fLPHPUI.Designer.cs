@@ -46,9 +46,16 @@
             this.tglEnableMinOutput = new Syncfusion.Windows.Forms.Tools.ToggleButton();
             this.tglEnableXMLOutput = new Syncfusion.Windows.Forms.Tools.ToggleButton();
             this.fbdFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.btnClearConsoleLog = new System.Windows.Forms.Button();
+            this.btnCopyConsoleLog = new System.Windows.Forms.Button();
+            this.btnOpenProjectLog = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnOpenProjectFolder = new System.Windows.Forms.Button();
+            this.chbSaveConsoleLog = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.tglRemoveHTMLComments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableMinOutput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableXMLOutput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // rtbLogOutput
@@ -56,13 +63,13 @@
             this.rtbLogOutput.BackColor = System.Drawing.Color.Black;
             this.rtbLogOutput.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbLogOutput.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.rtbLogOutput.Font = new System.Drawing.Font("Consolas", 10F);
+            this.rtbLogOutput.Font = new System.Drawing.Font("Consolas", 9F);
             this.rtbLogOutput.ForeColor = System.Drawing.Color.White;
-            this.rtbLogOutput.Location = new System.Drawing.Point(0, 112);
+            this.rtbLogOutput.Location = new System.Drawing.Point(0, 165);
             this.rtbLogOutput.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.rtbLogOutput.Name = "rtbLogOutput";
             this.rtbLogOutput.ReadOnly = true;
-            this.rtbLogOutput.Size = new System.Drawing.Size(684, 284);
+            this.rtbLogOutput.Size = new System.Drawing.Size(733, 282);
             this.rtbLogOutput.TabIndex = 0;
             this.rtbLogOutput.Text = "";
             // 
@@ -79,7 +86,7 @@
             this.btnStopPreprocessor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStopPreprocessor.Font = new System.Drawing.Font("Calibri Light", 14F);
             this.btnStopPreprocessor.ForeColor = System.Drawing.Color.OrangeRed;
-            this.btnStopPreprocessor.Location = new System.Drawing.Point(0, 66);
+            this.btnStopPreprocessor.Location = new System.Drawing.Point(1, 66);
             this.btnStopPreprocessor.Margin = new System.Windows.Forms.Padding(4);
             this.btnStopPreprocessor.Name = "btnStopPreprocessor";
             this.btnStopPreprocessor.Size = new System.Drawing.Size(144, 33);
@@ -94,7 +101,7 @@
             this.btnStartPreprocessor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartPreprocessor.Font = new System.Drawing.Font("Calibri Light", 16F);
             this.btnStartPreprocessor.ForeColor = System.Drawing.Color.LawnGreen;
-            this.btnStartPreprocessor.Location = new System.Drawing.Point(0, 12);
+            this.btnStartPreprocessor.Location = new System.Drawing.Point(1, 12);
             this.btnStartPreprocessor.Margin = new System.Windows.Forms.Padding(4);
             this.btnStartPreprocessor.Name = "btnStartPreprocessor";
             this.btnStartPreprocessor.Size = new System.Drawing.Size(144, 46);
@@ -155,22 +162,25 @@
             // 
             // txbProjectDirectory
             // 
-            this.txbProjectDirectory.Location = new System.Drawing.Point(401, 43);
+            this.txbProjectDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txbProjectDirectory.Location = new System.Drawing.Point(409, 44);
             this.txbProjectDirectory.Name = "txbProjectDirectory";
             this.txbProjectDirectory.ReadOnly = true;
-            this.txbProjectDirectory.Size = new System.Drawing.Size(271, 27);
+            this.txbProjectDirectory.Size = new System.Drawing.Size(323, 27);
             this.txbProjectDirectory.TabIndex = 6;
             // 
             // btnBrowseDirectories
             // 
+            this.btnBrowseDirectories.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBrowseDirectories.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(93)))), ((int)(((byte)(149)))));
             this.btnBrowseDirectories.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBrowseDirectories.Font = new System.Drawing.Font("Calibri Light", 12F);
+            this.btnBrowseDirectories.Font = new System.Drawing.Font("Calibri Light", 11F);
             this.btnBrowseDirectories.ForeColor = System.Drawing.Color.White;
-            this.btnBrowseDirectories.Location = new System.Drawing.Point(520, 73);
+            this.btnBrowseDirectories.Location = new System.Drawing.Point(597, 74);
             this.btnBrowseDirectories.Margin = new System.Windows.Forms.Padding(4);
             this.btnBrowseDirectories.Name = "btnBrowseDirectories";
-            this.btnBrowseDirectories.Size = new System.Drawing.Size(151, 27);
+            this.btnBrowseDirectories.Size = new System.Drawing.Size(135, 27);
             this.btnBrowseDirectories.TabIndex = 7;
             this.btnBrowseDirectories.Text = "Browse directories";
             this.btnBrowseDirectories.UseVisualStyleBackColor = false;
@@ -178,8 +188,9 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(543, 21);
+            this.label4.Location = new System.Drawing.Point(603, 22);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(129, 19);
             this.label4.TabIndex = 5;
@@ -231,11 +242,103 @@
             this.tglEnableXMLOutput.VisualStyle = Syncfusion.Windows.Forms.Tools.ToggleButtonStyle.Office2016Colorful;
             this.tglEnableXMLOutput.ToggleStateChanged += new Syncfusion.Windows.Forms.Tools.ToggleStateChangedEventHandler(this.tglEnableXMLOutput_ToggleStateChanged);
             // 
+            // btnClearConsoleLog
+            // 
+            this.btnClearConsoleLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(93)))), ((int)(((byte)(149)))));
+            this.btnClearConsoleLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearConsoleLog.Font = new System.Drawing.Font("Calibri Light", 11F);
+            this.btnClearConsoleLog.ForeColor = System.Drawing.Color.White;
+            this.btnClearConsoleLog.Location = new System.Drawing.Point(1, 129);
+            this.btnClearConsoleLog.Margin = new System.Windows.Forms.Padding(4);
+            this.btnClearConsoleLog.Name = "btnClearConsoleLog";
+            this.btnClearConsoleLog.Size = new System.Drawing.Size(119, 27);
+            this.btnClearConsoleLog.TabIndex = 7;
+            this.btnClearConsoleLog.Text = "Clear console log";
+            this.btnClearConsoleLog.UseVisualStyleBackColor = false;
+            this.btnClearConsoleLog.Click += new System.EventHandler(this.btnClearConsoleLog_Click);
+            // 
+            // btnCopyConsoleLog
+            // 
+            this.btnCopyConsoleLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(93)))), ((int)(((byte)(149)))));
+            this.btnCopyConsoleLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCopyConsoleLog.Font = new System.Drawing.Font("Calibri Light", 11F);
+            this.btnCopyConsoleLog.ForeColor = System.Drawing.Color.White;
+            this.btnCopyConsoleLog.Location = new System.Drawing.Point(128, 129);
+            this.btnCopyConsoleLog.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCopyConsoleLog.Name = "btnCopyConsoleLog";
+            this.btnCopyConsoleLog.Size = new System.Drawing.Size(119, 27);
+            this.btnCopyConsoleLog.TabIndex = 7;
+            this.btnCopyConsoleLog.Text = "Copy console log";
+            this.btnCopyConsoleLog.UseVisualStyleBackColor = false;
+            this.btnCopyConsoleLog.Click += new System.EventHandler(this.btnCopyConsoleLog_Click);
+            // 
+            // btnOpenProjectLog
+            // 
+            this.btnOpenProjectLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenProjectLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(93)))), ((int)(((byte)(149)))));
+            this.btnOpenProjectLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenProjectLog.Font = new System.Drawing.Font("Calibri Light", 11F);
+            this.btnOpenProjectLog.ForeColor = System.Drawing.Color.White;
+            this.btnOpenProjectLog.Location = new System.Drawing.Point(613, 129);
+            this.btnOpenProjectLog.Margin = new System.Windows.Forms.Padding(4);
+            this.btnOpenProjectLog.Name = "btnOpenProjectLog";
+            this.btnOpenProjectLog.Size = new System.Drawing.Size(119, 27);
+            this.btnOpenProjectLog.TabIndex = 7;
+            this.btnOpenProjectLog.Text = "Open project log";
+            this.btnOpenProjectLog.UseVisualStyleBackColor = false;
+            this.btnOpenProjectLog.Click += new System.EventHandler(this.btnOpenProjectLog_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(93)))), ((int)(((byte)(149)))));
+            this.pictureBox1.Location = new System.Drawing.Point(0, 120);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(751, 2);
+            this.pictureBox1.TabIndex = 8;
+            this.pictureBox1.TabStop = false;
+            // 
+            // btnOpenProjectFolder
+            // 
+            this.btnOpenProjectFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenProjectFolder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(93)))), ((int)(((byte)(149)))));
+            this.btnOpenProjectFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenProjectFolder.Font = new System.Drawing.Font("Calibri Light", 11F);
+            this.btnOpenProjectFolder.ForeColor = System.Drawing.Color.White;
+            this.btnOpenProjectFolder.Location = new System.Drawing.Point(454, 74);
+            this.btnOpenProjectFolder.Margin = new System.Windows.Forms.Padding(4);
+            this.btnOpenProjectFolder.Name = "btnOpenProjectFolder";
+            this.btnOpenProjectFolder.Size = new System.Drawing.Size(135, 27);
+            this.btnOpenProjectFolder.TabIndex = 7;
+            this.btnOpenProjectFolder.Text = "Open project folder";
+            this.btnOpenProjectFolder.UseVisualStyleBackColor = false;
+            this.btnOpenProjectFolder.Click += new System.EventHandler(this.btnOpenProjectFolder_Click);
+            // 
+            // chbSaveConsoleLog
+            // 
+            this.chbSaveConsoleLog.AutoSize = true;
+            this.chbSaveConsoleLog.Checked = true;
+            this.chbSaveConsoleLog.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbSaveConsoleLog.Location = new System.Drawing.Point(471, 131);
+            this.chbSaveConsoleLog.Name = "chbSaveConsoleLog";
+            this.chbSaveConsoleLog.Size = new System.Drawing.Size(135, 23);
+            this.chbSaveConsoleLog.TabIndex = 9;
+            this.chbSaveConsoleLog.Text = "Save console log";
+            this.chbSaveConsoleLog.UseVisualStyleBackColor = true;
+            this.chbSaveConsoleLog.CheckedChanged += new System.EventHandler(this.chbSaveConsoleLog_CheckedChanged);
+            // 
             // LPHPUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 396);
+            this.ClientSize = new System.Drawing.Size(733, 447);
+            this.Controls.Add(this.chbSaveConsoleLog);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.btnOpenProjectFolder);
+            this.Controls.Add(this.btnOpenProjectLog);
+            this.Controls.Add(this.btnCopyConsoleLog);
+            this.Controls.Add(this.btnClearConsoleLog);
             this.Controls.Add(this.btnBrowseDirectories);
             this.Controls.Add(this.txbProjectDirectory);
             this.Controls.Add(this.label3);
@@ -276,6 +379,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tglRemoveHTMLComments)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableMinOutput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableXMLOutput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -297,6 +401,12 @@
         private Syncfusion.Windows.Forms.Tools.ToggleButton tglEnableMinOutput;
         private Syncfusion.Windows.Forms.Tools.ToggleButton tglEnableXMLOutput;
         private System.Windows.Forms.FolderBrowserDialog fbdFolderBrowser;
+        private System.Windows.Forms.Button btnClearConsoleLog;
+        private System.Windows.Forms.Button btnCopyConsoleLog;
+        private System.Windows.Forms.Button btnOpenProjectLog;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button btnOpenProjectFolder;
+        private System.Windows.Forms.CheckBox chbSaveConsoleLog;
     }
 }
 

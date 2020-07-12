@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -33,11 +35,13 @@ namespace LPHPUI
                 if (LPHPCompiler.COMPOPT.ContainsKey("REMOVE_HTML_COMMENTS") && Convert.ToBoolean(LPHPCompiler.COMPOPT["REMOVE_HTML_COMMENTS"])) tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
                 else tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Inactive;
 
-                if (LPHPCompiler.COMPOPT.ContainsKey("MIN_OUTPUT_ENABLED") && Convert.ToBoolean(LPHPCompiler.COMPOPT["MIN_OUTPUT_ENABLED"])) tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
-                else tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Inactive;
+                if (LPHPCompiler.COMPOPT.ContainsKey("MIN_OUTPUT_ENABLED") && Convert.ToBoolean(LPHPCompiler.COMPOPT["MIN_OUTPUT_ENABLED"])) tglEnableMinOutput.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
+                else tglEnableMinOutput.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Inactive;
 
-                if (LPHPCompiler.COMPOPT.ContainsKey("XML_OUTPUT_ENABLED") && Convert.ToBoolean(LPHPCompiler.COMPOPT["XML_OUTPUT_ENABLED"])) tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
-                else tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Inactive;
+                if (LPHPCompiler.COMPOPT.ContainsKey("XML_OUTPUT_ENABLED") && Convert.ToBoolean(LPHPCompiler.COMPOPT["XML_OUTPUT_ENABLED"])) tglEnableXMLOutput.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
+                else tglEnableXMLOutput.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Inactive;
+
+                if (LPHPCompiler.COMPOPT.ContainsKey("ENABLE_CONSOLE_LOG")) chbSaveConsoleLog.Checked = Convert.ToBoolean(LPHPCompiler.COMPOPT["ENABLE_CONSOLE_LOG"]);
             }
             catch { }
         }
@@ -67,7 +71,7 @@ namespace LPHPUI
             LPHPCompiler.Init();
 
             // Initialize LPHP-Watchdog
-            LPHPWatchdog.Init();
+            LPHPWatchdog.Init(txbProjectDirectory.Text);
 
             // Set LPHP-Debug Mode
             LPHPDebugger.PrintDebug = DebugToTxb;
@@ -83,12 +87,12 @@ namespace LPHPUI
                 {
                     bgwLPHPCompiler.ReportProgress(0, new Tuple<string, Color>("Reloading LPHP-Config...", Color.Yellow));
                     LPHPCompiler.Init();
-                    LPHPWatchdog.Init();
+                    LPHPWatchdog.Init(txbProjectDirectory.Text);
                     QueueLPHPRestart = false;
                 }
 
                 // Run the LPHP-Watchdog on the given directory
-                int watchdogResult = LPHPWatchdog.RunOnce(txbProjectDirectory.Text);
+                int watchdogResult = LPHPWatchdog.RunOnce();
 
                 if(watchdogResult == -1)
                 {
@@ -123,6 +127,9 @@ namespace LPHPUI
             }
 
             bgwLPHPCompiler.ReportProgress(0, new Tuple<string, Color>(pMessage, foreColor));
+
+
+            LPHPDebugger.LogDebugData(pMessage.Replace(Environment.NewLine, ""), pType);
         }
 
         private void bgwLPHPCompiler_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -201,5 +208,64 @@ namespace LPHPUI
             LPHPCompiler.COMPOPT["XML_OUTPUT_ENABLED"] = (tglEnableXMLOutput.ToggleState == Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active);
             LPHPCompiler.SaveConfig();
         }
+
+        private void chbSaveConsoleLog_CheckedChanged(object sender, EventArgs e)
+        {
+            QueueLPHPRestart = true;
+            LPHPCompiler.COMPOPT["ENABLE_CONSOLE_LOG"] = chbSaveConsoleLog.Checked;
+            LPHPCompiler.SaveConfig();
+        }
+
+        private void btnClearConsoleLog_Click(object sender, EventArgs e)
+        {
+            rtbLogOutput.Clear();
+            AppendText("Console cleared.", Color.Yellow);
+        }
+
+        private void btnCopyConsoleLog_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(rtbLogOutput.Text);
+            AppendText("Console log coppied to clipboard.", Color.Yellow);
+        }
+
+        private void btnOpenProjectLog_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txbProjectDirectory.Text))
+            {
+                if (File.Exists(Path.Combine(txbProjectDirectory.Text, LPHPDebugger.LPHPLogFile)))
+                {
+                    Process.Start(Path.Combine(txbProjectDirectory.Text, LPHPDebugger.LPHPLogFile));
+                }
+                else
+                {
+                    MessageBox.Show("No log file was found. Enable logging to save LPHP log-files.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a valid propject folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnOpenProjectFolder_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(txbProjectDirectory.Text))
+            {
+                if(Directory.Exists(txbProjectDirectory.Text))
+                {
+                    Process.Start(txbProjectDirectory.Text);
+                }
+                else
+                {
+                    MessageBox.Show("The selected directory could not be opened.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a valid propject folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        
     }
 }

@@ -25,8 +25,7 @@ namespace LPHPConsole
             // Enable the creation of a log file
             LPHPDebugger.CreateLogFile = true;
 
-
-            if(args.Length > 0)
+            if (args.Length > 0)
             {
                 if (Directory.Exists(args[0].ToString()))
                 {
@@ -62,9 +61,10 @@ namespace LPHPConsole
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\"");
 
+            LPHPWatchdog.Init(watchDirectory);
 
             // Run the LPHP-Watchdog on the given directory
-            LPHPWatchdog.Run(watchDirectory);
+            LPHPWatchdog.Run();
         }
 
         private static void ShowStartupBanner()

@@ -15,4 +15,3 @@ H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.AssemblyInfo.
 H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.csproj.CoreCompileInputs.cache
 H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.dll
 H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.pdb
-H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.csprojAssemblyReference.cache

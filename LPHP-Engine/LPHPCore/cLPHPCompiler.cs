@@ -30,7 +30,8 @@ namespace LPHPCore
                 { "REMOVE_HTML_COMMENTS", true },
                 { "MIN_OUTPUT_ENABLED", true },
                 { "XML_OUTPUT_ENABLED", false },
-                { "UI_LAST_PROJECT_PATH", "" }
+                { "UI_LAST_PROJECT_PATH", "" },
+                { "ENABLE_CONSOLE_LOG", true }
             };
 
             if (!File.Exists("LPHP.ini"))

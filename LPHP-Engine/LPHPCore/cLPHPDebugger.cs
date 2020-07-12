@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Net;
 
 namespace LPHPCore
@@ -21,6 +23,8 @@ namespace LPHPCore
     /// </summary>
     public class LPHPDebugger
     {
+        public const string LPHPLogFile = "compile.lphp.log";
+
         /// <summary>
         /// Prints and logs debug information
         /// </summary>
@@ -76,6 +80,18 @@ namespace LPHPCore
         public static void PrintError(string pMessage)
             => PrintDebug(pMessage, LPHPMessageType.LPHPError);
 
+        public static void LogDebugData(string pMessage, LPHPMessageType pType)
+        {
+            if ((bool)LPHPCompiler.COMPOPT["ENABLE_CONSOLE_LOG"])
+            {
+                using (StreamWriter sw = new StreamWriter(Path.Combine(LPHPWatchdog.ProjectRoot, LPHPLogFile), true))
+                {
+                    sw.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")}]<{pType}> {pMessage}");
+                }
+            }
+            else File.Delete(Path.Combine(LPHPWatchdog.ProjectRoot, LPHPLogFile));
+        }
+
         public class DebugOutputs
         {
             public static void None(string pMessage, LPHPMessageType pType) { }
@@ -83,6 +99,7 @@ namespace LPHPCore
             public static void ToDebug(string pMessage, LPHPMessageType pType)
             {
                 Debug.Print(pMessage);
+                LogDebugData(pMessage, pType);
             }
             
             public static void ToConsole(string pMessage, LPHPMessageType pType)
@@ -113,6 +130,8 @@ namespace LPHPCore
                 // Reset to old console colors
                 Console.ForegroundColor = foreColor;
                 Console.BackgroundColor = backColor;
+
+                LogDebugData(pMessage, pType);
             }
         }
     }

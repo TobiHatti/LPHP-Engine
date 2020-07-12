@@ -10,17 +10,20 @@ namespace LPHPCore
 {
     public class LPHPWatchdog
     {
+        public static string ProjectRoot { get; set; } = "";
+
         private static Dictionary<string, string> lphpFiles;
 
 
-        public static void Run(string pWatchFolder)
-            => Run(pWatchFolder, true);
+        public static void Run()
+            => Run(true);
 
-        public static int RunOnce(string pWatchFolder)
-            => Run(pWatchFolder, false);
+        public static int RunOnce()
+            => Run(false);
 
-        public static void Init()
+        public static void Init(string pWatchFolder)
         {
+            ProjectRoot = pWatchFolder;
             lphpFiles = new Dictionary<string, string>();
         }
 
@@ -28,17 +31,17 @@ namespace LPHPCore
         /// Constantly checks the given directory for changes and re-compiles as soon as a change is detected.
         /// </summary>
         /// <param name="pWatchFolder">Folder to watch</param>
-        private static int Run(string pWatchFolder, bool pRunInfinite = true)
+        private static int Run(bool pRunInfinite = true)
         {
             try
             {
-                if (!string.IsNullOrEmpty(pWatchFolder))
+                if (!string.IsNullOrEmpty(ProjectRoot))
                 {
                     if(pRunInfinite) lphpFiles = new Dictionary<string, string>();
 
                     do
                     {
-                        foreach (string filePath in Directory.EnumerateFiles(pWatchFolder, "*.*", SearchOption.AllDirectories))
+                        foreach (string filePath in Directory.EnumerateFiles(ProjectRoot, "*.*", SearchOption.AllDirectories))
                         {
                             try
                             {
