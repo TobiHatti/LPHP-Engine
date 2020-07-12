@@ -11,7 +11,7 @@ namespace LPHPCore
     /// </summary>
     public class LPHPCompiler
     {
-        private static Dictionary<string, object> COMPOPT = null;
+        public static Dictionary<string, object> COMPOPT { get; set; } = null;
 
         private static readonly List<string> instructionSessionBuffer = new List<string>();
         private static readonly Dictionary<string, string> fileBuffer = new Dictionary<string, string>();
@@ -29,17 +29,13 @@ namespace LPHPCore
             {
                 { "REMOVE_HTML_COMMENTS", true },
                 { "MIN_OUTPUT_ENABLED", true },
-                { "XML_OUTPUT_ENABLED", false }
+                { "XML_OUTPUT_ENABLED", false },
+                { "UI_LAST_PROJECT_PATH", "" }
             };
 
             if (!File.Exists("LPHP.ini"))
             {
-                using (StreamWriter sw = new StreamWriter("LPHP.ini"))
-                {
-                    foreach (KeyValuePair<string, object> entry in COMPOPT)
-                        sw.WriteLine($"{entry.Key}={entry.Value}");
-                    sw.Close();
-                }
+                SaveConfig();
             }
             else
             {
@@ -65,6 +61,16 @@ namespace LPHPCore
                         }
                     }
                 }
+            }
+        }
+
+        public static void SaveConfig()
+        {
+            using (StreamWriter sw = new StreamWriter("LPHP.ini"))
+            {
+                foreach (KeyValuePair<string, object> entry in COMPOPT)
+                    sw.WriteLine($"{entry.Key}={entry.Value}");
+                sw.Close();
             }
         }
 

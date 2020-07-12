@@ -14,12 +14,32 @@ namespace LPHPUI
 {
     public partial class LPHPUI : SfForm
     {
+        private bool QueueLPHPRestart = false;
+
         public LPHPUI()
         {
             InitializeComponent();
             this.Style.Border = new Pen(Color.FromArgb(79, 93, 149), 2);
             this.Style.InactiveBorder = new Pen(Color.FromArgb(101, 114, 172), 2);
             ShowStartupBanner();
+
+            LPHPCompiler.Init();
+
+            try
+            {
+                if (LPHPCompiler.COMPOPT.ContainsKey("UI_LAST_PROJECT_PATH")) txbProjectDirectory.Text = LPHPCompiler.COMPOPT["UI_LAST_PROJECT_PATH"].ToString();
+                else txbProjectDirectory.Text = "";
+
+                if (LPHPCompiler.COMPOPT.ContainsKey("REMOVE_HTML_COMMENTS") && Convert.ToBoolean(LPHPCompiler.COMPOPT["REMOVE_HTML_COMMENTS"])) tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
+                else tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Inactive;
+
+                if (LPHPCompiler.COMPOPT.ContainsKey("MIN_OUTPUT_ENABLED") && Convert.ToBoolean(LPHPCompiler.COMPOPT["MIN_OUTPUT_ENABLED"])) tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
+                else tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Inactive;
+
+                if (LPHPCompiler.COMPOPT.ContainsKey("XML_OUTPUT_ENABLED") && Convert.ToBoolean(LPHPCompiler.COMPOPT["XML_OUTPUT_ENABLED"])) tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
+                else tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Inactive;
+            }
+            catch { }
         }
 
         private void LPHPUI_FormClosing(object sender, FormClosingEventArgs e)
@@ -59,8 +79,28 @@ namespace LPHPUI
                 if (bgwLPHPCompiler.CancellationPending) 
                     return;
 
+                if(QueueLPHPRestart)
+                {
+                    bgwLPHPCompiler.ReportProgress(0, new Tuple<string, Color>("Reloading LPHP-Config...", Color.Yellow));
+                    LPHPCompiler.Init();
+                    LPHPWatchdog.Init();
+                    QueueLPHPRestart = false;
+                }
+
                 // Run the LPHP-Watchdog on the given directory
-                LPHPWatchdog.RunOnce(txbProjectDirectory.Text);
+                int watchdogResult = LPHPWatchdog.RunOnce(txbProjectDirectory.Text);
+
+                if(watchdogResult == -1)
+                {
+                    bgwLPHPCompiler.ReportProgress(0, new Tuple<string, Color>("Stopping LPHP-Engine.", Color.OrangeRed));
+                    bgwLPHPCompiler.CancelAsync();
+                }
+
+                if(watchdogResult == -2)
+                {
+                    bgwLPHPCompiler.ReportProgress(0, new Tuple<string, Color>("Problem detected. Halting LPHP for 5 seconds.", Color.OrangeRed));
+                    Thread.Sleep(5000);
+                }
             }
             
         }
@@ -94,6 +134,12 @@ namespace LPHPUI
 
         private void AppendText(string text, Color foreColor)
         {
+            if (rtbLogOutput.TextLength > 210000000)
+            {
+                rtbLogOutput.Clear();
+                AppendText("Console cleared. Max length exeeded.", Color.Yellow);
+            }
+
             rtbLogOutput.SelectionStart = rtbLogOutput.TextLength;
             rtbLogOutput.SelectionLength = 0;
 
@@ -107,18 +153,53 @@ namespace LPHPUI
 
         private void btnStartPreprocessor_Click(object sender, EventArgs e)
         {
-            AppendText("Starting LPHP-Engine in \"Directory Here\"", Color.Lime);
+            AppendText($"Starting LPHP-Engine in \"{txbProjectDirectory.Text}\"", Color.Lime);
 
             if (!bgwLPHPCompiler.IsBusy)
                 bgwLPHPCompiler.RunWorkerAsync();
             else
-                AppendText("LPHP-Engine is already running", Color.OrangeRed);
+                AppendText("LPHP-Engine is already running.", Color.OrangeRed);
         }
 
         private void btnStopPreprocessor_Click(object sender, EventArgs e)
         {
-            AppendText("Stopping LPHP-Engine...", Color.OrangeRed);
-            bgwLPHPCompiler.CancelAsync();
+            if (bgwLPHPCompiler.IsBusy)
+            {
+                AppendText("Stopping LPHP-Engine.", Color.OrangeRed);
+                bgwLPHPCompiler.CancelAsync();
+            }
+            else AppendText("LPHP-Engine is not running.", Color.OrangeRed);
+        }
+
+        private void btnBrowseDirectories_Click(object sender, EventArgs e)
+        {
+            if(fbdFolderBrowser.ShowDialog() == DialogResult.OK)
+            {
+                txbProjectDirectory.Text = fbdFolderBrowser.SelectedPath;
+                LPHPCompiler.COMPOPT["UI_LAST_PROJECT_PATH"] = fbdFolderBrowser.SelectedPath;
+                LPHPCompiler.SaveConfig();
+            }
+        }
+
+        private void tglRemoveHTMLComments_ToggleStateChanged(object sender, Syncfusion.Windows.Forms.Tools.ToggleStateChangedEventArgs e)
+        {
+            QueueLPHPRestart = true;
+            LPHPCompiler.COMPOPT["REMOVE_HTML_COMMENTS"] = (tglRemoveHTMLComments.ToggleState == Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active);
+            LPHPCompiler.SaveConfig();
+        }
+
+        private void tglEnableMinOutput_ToggleStateChanged(object sender, Syncfusion.Windows.Forms.Tools.ToggleStateChangedEventArgs e)
+        {
+            QueueLPHPRestart = true;
+            LPHPCompiler.COMPOPT["MIN_OUTPUT_ENABLED"] = (tglEnableMinOutput.ToggleState == Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active);
+            LPHPCompiler.SaveConfig();
+        }
+
+        private void tglEnableXMLOutput_ToggleStateChanged(object sender, Syncfusion.Windows.Forms.Tools.ToggleStateChangedEventArgs e)
+        {
+            QueueLPHPRestart = true;
+            LPHPCompiler.COMPOPT["XML_OUTPUT_ENABLED"] = (tglEnableXMLOutput.ToggleState == Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active);
+            LPHPCompiler.SaveConfig();
         }
     }
 }

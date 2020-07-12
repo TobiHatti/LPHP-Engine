@@ -16,7 +16,7 @@ namespace LPHPCore
         public static void Run(string pWatchFolder)
             => Run(pWatchFolder, true);
 
-        public static void RunOnce(string pWatchFolder)
+        public static int RunOnce(string pWatchFolder)
             => Run(pWatchFolder, false);
 
         public static void Init()
@@ -28,7 +28,7 @@ namespace LPHPCore
         /// Constantly checks the given directory for changes and re-compiles as soon as a change is detected.
         /// </summary>
         /// <param name="pWatchFolder">Folder to watch</param>
-        private static void Run(string pWatchFolder, bool pRunInfinite = true)
+        private static int Run(string pWatchFolder, bool pRunInfinite = true)
         {
             try
             {
@@ -80,6 +80,7 @@ namespace LPHPCore
                             catch
                             {
                                 LPHPDebugger.PrintWarning("Compilation aborted. Please fix all errors shown above and try again.");
+                                if (!pRunInfinite) return -2;
                             }
                         }
                         Thread.Sleep(100);
@@ -90,15 +91,17 @@ namespace LPHPCore
                 {
                     LPHPDebugger.PrintError("*** LPHP Watchdog Error ***");
                     LPHPDebugger.PrintError("Please provide a path to the target folder and try again.");
+                    if (!pRunInfinite) return -1;
                 }
             }
             catch
             {
                 LPHPDebugger.PrintError("*** Error reading the directory ***");
                 LPHPDebugger.PrintError("Please make sure the given directory exists.");
+                if (!pRunInfinite) return -1;
             }
 
-            return;
+            return 0;
         }
     }
 }

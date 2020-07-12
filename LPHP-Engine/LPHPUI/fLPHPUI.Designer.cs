@@ -80,7 +80,7 @@
             this.btnStopPreprocessor.Font = new System.Drawing.Font("Calibri Light", 14F);
             this.btnStopPreprocessor.ForeColor = System.Drawing.Color.OrangeRed;
             this.btnStopPreprocessor.Location = new System.Drawing.Point(0, 66);
-            this.btnStopPreprocessor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnStopPreprocessor.Margin = new System.Windows.Forms.Padding(4);
             this.btnStopPreprocessor.Name = "btnStopPreprocessor";
             this.btnStopPreprocessor.Size = new System.Drawing.Size(144, 33);
             this.btnStopPreprocessor.TabIndex = 1;
@@ -124,6 +124,7 @@
             this.tglRemoveHTMLComments.ThemeStyle.ToggleButttonSliderStyle.BorderThickness = 1;
             this.tglRemoveHTMLComments.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
             this.tglRemoveHTMLComments.VisualStyle = Syncfusion.Windows.Forms.Tools.ToggleButtonStyle.Office2016Colorful;
+            this.tglRemoveHTMLComments.ToggleStateChanged += new Syncfusion.Windows.Forms.Tools.ToggleStateChangedEventHandler(this.tglRemoveHTMLComments_ToggleStateChanged);
             // 
             // label1
             // 
@@ -173,6 +174,7 @@
             this.btnBrowseDirectories.TabIndex = 7;
             this.btnBrowseDirectories.Text = "Browse directories";
             this.btnBrowseDirectories.UseVisualStyleBackColor = false;
+            this.btnBrowseDirectories.Click += new System.EventHandler(this.btnBrowseDirectories_Click);
             // 
             // label4
             // 
@@ -204,6 +206,7 @@
             this.tglEnableMinOutput.ThemeStyle.ToggleButttonSliderStyle.BorderThickness = 1;
             this.tglEnableMinOutput.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
             this.tglEnableMinOutput.VisualStyle = Syncfusion.Windows.Forms.Tools.ToggleButtonStyle.Office2016Colorful;
+            this.tglEnableMinOutput.ToggleStateChanged += new Syncfusion.Windows.Forms.Tools.ToggleStateChangedEventHandler(this.tglEnableMinOutput_ToggleStateChanged);
             // 
             // tglEnableXMLOutput
             // 
@@ -226,6 +229,7 @@
             this.tglEnableXMLOutput.ThemeStyle.ToggleButttonSliderStyle.BorderThickness = 1;
             this.tglEnableXMLOutput.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
             this.tglEnableXMLOutput.VisualStyle = Syncfusion.Windows.Forms.Tools.ToggleButtonStyle.Office2016Colorful;
+            this.tglEnableXMLOutput.ToggleStateChanged += new Syncfusion.Windows.Forms.Tools.ToggleStateChangedEventHandler(this.tglEnableXMLOutput_ToggleStateChanged);
             // 
             // LPHPUI
             // 
@@ -247,7 +251,8 @@
             this.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.IconSize = new System.Drawing.Size(30, 30);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "LPHPUI";
             this.Padding = new System.Windows.Forms.Padding(0);
