@@ -25,12 +25,10 @@ namespace LPHPConsole
             // Enable the creation of a log file
             LPHPDebugger.CreateLogFile = true;
 
+            // Check if the project-path is provided upon startup
             if (args.Length > 0)
             {
-                if (Directory.Exists(args[0].ToString()))
-                {
-                    watchDirectory = args[0].ToString();
-                }
+                if (Directory.Exists(args[0].ToString()))  watchDirectory = args[0].ToString();
                 else
                 {
                     LPHPDebugger.PrintError("*** LPHP Startup Error ***");
@@ -47,10 +45,7 @@ namespace LPHPConsole
                     watchDirectory = Console.ReadLine();
                     Console.WriteLine("");
 
-                    if(!Directory.Exists(watchDirectory))
-                    {
-                        LPHPDebugger.PrintError("The entered path is not valid! Please try again.");
-                    }
+                    if(!Directory.Exists(watchDirectory)) LPHPDebugger.PrintError("The entered path is not valid! Please try again.");
                 }
                 while (!Directory.Exists(watchDirectory));
             }
@@ -61,12 +56,16 @@ namespace LPHPConsole
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\"");
 
+            // Set up the watchdog and set the project-root
             LPHPWatchdog.Init(watchDirectory);
 
             // Run the LPHP-Watchdog on the given directory
             LPHPWatchdog.Run();
         }
 
+        /// <summary>
+        /// Prints a banner-message for LPHP
+        /// </summary>
         private static void ShowStartupBanner()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;

@@ -265,7 +265,5 @@ namespace LPHPUI
                 MessageBox.Show("Please select a valid propject folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
-        
     }
 }

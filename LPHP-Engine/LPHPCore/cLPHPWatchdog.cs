@@ -8,19 +8,35 @@ using System.Threading;
 
 namespace LPHPCore
 {
+    /// <summary>
+    /// Watches for changes in the selected directory and invokes the compiler when changes are detected.
+    /// </summary>
     public class LPHPWatchdog
     {
+        /// <summary>
+        /// Root-Path of the project
+        /// </summary>
         public static string ProjectRoot { get; set; } = "";
 
         private static Dictionary<string, string> lphpFiles;
 
-
+        /// <summary>
+        /// Runs the watchdog until the program is terminated
+        /// </summary>
         public static void Run()
             => Run(true);
 
+        /// <summary>
+        /// Runs the watchdog once and returns the result-state from the watchdog
+        /// </summary>
+        /// <returns>Result of the watchdog-cycle</returns>
         public static int RunOnce()
             => Run(false);
 
+        /// <summary>
+        /// Initializes the watchdog and sets the target folder
+        /// </summary>
+        /// <param name="pWatchFolder">Root-folder of the LPHP-project</param>
         public static void Init(string pWatchFolder)
         {
             ProjectRoot = pWatchFolder;

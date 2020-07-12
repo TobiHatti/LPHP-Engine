@@ -80,28 +80,51 @@ namespace LPHPCore
         public static void PrintError(string pMessage)
             => PrintDebug(pMessage, LPHPMessageType.LPHPError);
 
+        /// <summary>
+        /// Logs the provided message to the LPHP log-file
+        /// </summary>
+        /// <param name="pMessage">Message-string to be logged</param>
+        /// <param name="pType">Messagetype</param>
         public static void LogDebugData(string pMessage, LPHPMessageType pType)
         {
             if ((bool)LPHPCompiler.COMPOPT["ENABLE_CONSOLE_LOG"])
             {
                 using (StreamWriter sw = new StreamWriter(Path.Combine(LPHPWatchdog.ProjectRoot, LPHPLogFile), true))
                 {
-                    sw.WriteLine($"[{DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")}]<{pType}> {pMessage}");
+                    sw.WriteLine($"[{DateTime.Now:yyyy-MM-ddTHH:mm:ss}]<{pType}> {pMessage}");
                 }
             }
             else File.Delete(Path.Combine(LPHPWatchdog.ProjectRoot, LPHPLogFile));
         }
 
+        /// <summary>
+        /// Provides pre-defined log and output-methods for the debugger
+        /// </summary>
         public class DebugOutputs
         {
+            /// <summary>
+            /// Disables all logging-systems
+            /// </summary>
+            /// <param name="pMessage">Message-string to be shown and logged</param>
+            /// <param name="pType">Messagetype</param>
             public static void None(string pMessage, LPHPMessageType pType) { }
-            
+
+            /// <summary>
+            /// Shows the debug-info in the debug-window
+            /// </summary>
+            /// <param name="pMessage">Message-string to be shown and logged</param>
+            /// <param name="pType">Messagetype</param>
             public static void ToDebug(string pMessage, LPHPMessageType pType)
             {
                 Debug.Print(pMessage);
                 LogDebugData(pMessage, pType);
             }
-            
+
+            /// <summary>
+            /// Shows the debug-info in the console-window
+            /// </summary>
+            /// <param name="pMessage">Message-string to be shown and logged</param>
+            /// <param name="pType">Messagetype</param>
             public static void ToConsole(string pMessage, LPHPMessageType pType)
             {
                 // Save previous console color

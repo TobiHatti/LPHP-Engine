@@ -65,6 +65,9 @@ namespace LPHPCore
             }
         }
 
+        /// <summary>
+        /// Saves the config to the ini-file
+        /// </summary>
         public static void SaveConfig()
         {
             using (StreamWriter sw = new StreamWriter("LPHP.ini"))
