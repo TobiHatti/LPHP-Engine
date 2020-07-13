@@ -241,6 +241,7 @@
             this.tglEnableXMLOutput.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
             this.tglEnableXMLOutput.VisualStyle = Syncfusion.Windows.Forms.Tools.ToggleButtonStyle.Office2016Colorful;
             this.tglEnableXMLOutput.ToggleStateChanged += new Syncfusion.Windows.Forms.Tools.ToggleStateChangedEventHandler(this.tglEnableXMLOutput_ToggleStateChanged);
+            this.tglEnableXMLOutput.Click += new System.EventHandler(this.tglEnableXMLOutput_Click);
             // 
             // btnClearConsoleLog
             // 

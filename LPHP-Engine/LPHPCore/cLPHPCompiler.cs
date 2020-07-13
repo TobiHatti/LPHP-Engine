@@ -595,7 +595,7 @@ namespace LPHPCore
             {
                 using (StreamWriter sw = new StreamWriter(targetFileXML))
                 {
-                    sw.Write(pFileContent);
+                    sw.Write(LPHPHTML2XMLFormatter(pFileContent));
                     sw.Close();
                 }
 
@@ -632,6 +632,158 @@ namespace LPHPCore
             else if (pVariableValue.ToLower() == "false") return false;
             else if (decimal.TryParse(pVariableValue, out _)) return decimal.Parse(pVariableValue);
             else return pVariableValue;
+        }
+
+        /// <summary>
+        /// Attempts to convert unformated HTML+PHP string into XML-foramted output
+        /// </summary>
+        /// <param name="pRawHTML"></param>
+        /// <returns></returns>
+        private static string LPHPHTML2XMLFormatter(string pRawHTML)
+        {
+            Dictionary<int, Tuple<string, string>> restrictionFlags = new Dictionary<int, Tuple<string, string>>
+            {
+                { 0, new Tuple<string, string>("<?php", "?>") },
+                { 1, new Tuple<string, string>("<?=", "?>") },
+                { 2, new Tuple<string, string>("<script", "</script>") }
+            };
+
+            List<string> breakConditions = new List<string>()
+            {
+                ">",
+                "/>"
+            };
+
+            List<string> breakRestrictions = new List<string>()
+            {
+                //"?>",         // Not required: Linebreaks only get inserted if a whitespace already exists
+                //"</script>" 
+            };
+
+            StringBuilder sbXML = new StringBuilder();
+
+            int restrictedFlag = -1;
+
+            for (int i = 0; i < pRawHTML.Length; i++)
+            {
+                // Check if restricted flag starts
+                if (restrictedFlag == -1)
+                {
+                    foreach (KeyValuePair<int, Tuple<string, string>> restrict in restrictionFlags)
+                    {
+                        if (restrict.Value.Item1.Length < pRawHTML.Length - i)
+                        {
+                            if (restrictedFlag == -1 && pRawHTML.Substring(i, restrict.Value.Item1.Length) == restrict.Value.Item1)
+                            {
+                                restrictedFlag = restrict.Key;
+                            }
+                        }
+                    }
+                }
+                // Check if restricted flag ends
+                else
+                {
+                    if (pRawHTML.Substring(i - restrictionFlags[restrictedFlag].Item2.Length, restrictionFlags[restrictedFlag].Item2.Length) == restrictionFlags[restrictedFlag].Item2)
+                    {
+                        restrictedFlag = -1;
+                    }
+                }
+
+
+                if (restrictedFlag == -1)
+                {
+                    bool breakValid = false;
+
+                    // Add line-breaks in HTML-section
+                    if (pRawHTML[i] == ' ')
+                    {
+                        foreach (string condition in breakConditions)
+                        {
+                            if (i > condition.Length)
+                                if (pRawHTML.Substring(i - condition.Length, condition.Length) == condition) breakValid = true;
+                        }
+
+                        foreach (string restriction in breakRestrictions)
+                        {
+                            if (i > restriction.Length)
+                                if (pRawHTML.Substring(i - restriction.Length, restriction.Length) == restriction) breakValid = false;
+                        }
+
+                        if (breakValid) sbXML.Append("\r\n");
+                        else sbXML.Append(' ');
+                    }
+                    else sbXML.Append(pRawHTML[i]);
+                }
+                else sbXML.Append(pRawHTML[i]);
+            }
+
+            string xmlPrepared = sbXML.ToString();
+
+            sbXML.Clear();
+
+
+
+            List<string> tabIncrements = new List<string>()
+            {
+                @"^\<[\S\s]+?\>$",      // HTML open tags (only in line)
+            };
+
+            List<string> tabDecrements = new List<string>()
+            {
+                @"^\<\/[\S\s]+?\>$",    // HTML close tags (only one in line)
+            };
+
+            List<string> tabIgnores = new List<string>()
+            {
+                @"^\<\?[\S\s]+?\?\>$",                  // Ignore PHP-Tags
+                @"^\<script[\S\s]+?\<\/script\>$",      // Ignore JS-Blocks (short)
+                @"^\<\![\S\s]+?\>$",                    // HTML Comments and doctype
+                @"^\<(?!\?)[\S\s]+?(?<!\?)\/\>$",       // HTML Single line statements (with PHP included)
+                @"^\<[\S\s]+?\>[\S\s]*?\<\/[\S\s]+?\>$" // HTML inline open and close
+            };
+
+            int tabCount = 0;
+
+            // Trim each line and add indents
+            foreach (string line in xmlPrepared.Split(new string[] { "\r\n" }, StringSplitOptions.None))
+            {
+                string lineTrim = line.Trim();
+                bool ignoreTab = false;
+                short tabChanged = 0;
+
+                // Check for ignore cases
+                foreach (string tabIgnore in tabIgnores)
+                    if (Regex.IsMatch(lineTrim, tabIgnore)) ignoreTab = true;
+
+                if (!ignoreTab)
+                {
+                    // Check for decrement cases
+                    foreach (string tabDecrement in tabDecrements)
+                        if (tabChanged == 0 && Regex.IsMatch(lineTrim, tabDecrement))
+                        {
+                            tabChanged = -1;
+                        }
+
+                    // Check for increment cases
+                    foreach (string tabIncrement in tabIncrements)
+                        if (tabChanged == 0 && Regex.IsMatch(lineTrim, tabIncrement))
+                        {
+                            tabChanged = 1;
+                        }
+                }
+
+                // Decrement tab count
+                if (tabChanged == -1) tabCount--;
+
+                // Print line
+                for (int i = 0; i < tabCount + 1; i++) sbXML.Append('\t');
+                sbXML.AppendFormat("{0}{1}", lineTrim, "\r\n");
+
+                // Increment tab count
+                if (tabChanged == 1) tabCount++;
+            }
+
+            return sbXML.ToString();
         }
     }
 }

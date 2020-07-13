@@ -265,5 +265,10 @@ namespace LPHPUI
                 MessageBox.Show("Please select a valid propject folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void tglEnableXMLOutput_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
