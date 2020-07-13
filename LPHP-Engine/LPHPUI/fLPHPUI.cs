@@ -243,7 +243,7 @@ namespace LPHPUI
             }
             else
             {
-                MessageBox.Show("Please select a valid propject folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a valid project folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -262,7 +262,7 @@ namespace LPHPUI
             }
             else
             {
-                MessageBox.Show("Please select a valid propject folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a valid project folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
