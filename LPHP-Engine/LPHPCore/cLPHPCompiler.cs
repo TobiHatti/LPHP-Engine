@@ -773,10 +773,10 @@ namespace LPHPCore
                 }
 
                 // Decrement tab count
-                if (tabChanged == -1) tabCount--;
+                if (tabChanged == -1 && tabCount > 0) tabCount--;
 
                 // Print line
-                for (int i = 0; i < tabCount + 1; i++) sbXML.Append('\t');
+                for (int i = 0; i < tabCount; i++) sbXML.Append('\t');
                 sbXML.AppendFormat("{0}{1}", lineTrim, "\r\n");
 
                 // Increment tab count

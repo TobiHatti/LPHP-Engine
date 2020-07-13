@@ -211,7 +211,7 @@ namespace LPHPUI
 
         private void chbSaveConsoleLog_CheckedChanged(object sender, EventArgs e)
         {
-            QueueLPHPRestart = true;
+
             LPHPCompiler.COMPOPT["ENABLE_CONSOLE_LOG"] = chbSaveConsoleLog.Checked;
             LPHPCompiler.SaveConfig();
         }
