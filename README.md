@@ -1,4 +1,4 @@
-<img align="right" width="80" height="80" data-rmimg src="https://endev.at/content/projects/LPHP/LPHP_Logo_128.png">
+<img align="right" width="80" height="80" data-rmimg src="https://endev.at/content/projects/LPHP/LPHP_Logo.svg">
 
 # LPHP-Engine v1.0.0
 ![GitHub](https://img.shields.io/github/license/TobiHatti/LPHP-Engine)
@@ -96,10 +96,27 @@ For a list of all possible functions, click [here](https://github.com/TobiHatti/
 
 ## LPHP Preprocessor
 ### How to set up the LPHP Preprocessor
-Download the latest .exe-file from the release-page.
-Then, call the .exe-file via commandline, a batch-file or a shortcut.
+Download the latest installer and run it. It will automatically install 
+the LPHP-Console and the LPHP-UI App on your system. 
 
-__NOTE:__ The program takes 1 parameter: The path to the directory, 
+#### Option A (Recommended):
+Call the LPHP UI App, select your project directory, 
+check the options you want to enable and start the engine. 
+The app automatically saves your settings for the next session.
+
+![image](https://endev.at/content/projects/LPHP/projectImages/LPHPUISample.png)
+
+#### Option B:
+Call the LPHP-Console without any parameters. Upon startup, the console 
+will prompt you to enter the Path of your LPHP project. After entering the path, 
+the LPHP-Watchdog will constantly monitor the entered directory, until the console is closed.
+
+![image](https://endev.at/content/projects/LPHP/projectImages/LPHPConsoleSample1.png)
+
+#### Option C:
+Call the LPHP-Console with the target directory as a parameter:
+
+The LPHP-console can accept 1 parameter: The path to the directory, 
 where the LPHP-Files are located. (Usually the website's root-folder)
 
 Program-Call (Example):
@@ -108,7 +125,7 @@ Program-Call (Example):
 If everything was set up correctly, the preprocessor will constantly watch for changes in the 
 directory and compile any lphp-files where a change gets detected.
 
-![image](https://endev.at/content/projects/LPHP/projectImages/PreprocessorSample.png)
+![image](https://endev.at/content/projects/LPHP/projectImages/LPHPConsoleSample2.png)
 
 ## Usage
 ### Creating a Layout-Page
@@ -192,11 +209,11 @@ Pastes any files content in this section.
 Determines, if a LPHP file should be converted and saved as a PHP-file. Usually set to `true` in layout-pages.
 
 ### Preprocessor-Options
-These options can be changed in the LPHP.ini-file (located in the same directory as the executable).
+These options can be changed in the LPHP.ini-file (by default located under "C:\Users\YOUR_USER\AppData\Local\Endev\LPHP"), or by changing the settings in the LPHP-UI App.
 - `REMOVE_HTML_COMMENTS` (default: `True`):
 Determines, if HTML-comments should still be included in the `.php` output.
 - `MIN_OUTPUT_ENABLED` (default: `True`): Outputs the `.php`-file without line-breaks, tabs or unneccecary white-spaces.
-- `XML_OUTPUT_ENABLED` (default: `False`, __WORK IN PROGRESS__) Outputs the .php-file with propper indents and line-breaks.
+- `XML_OUTPUT_ENABLED` (default: `False`) Outputs the .php-file with propper indents and line-breaks. (More resource-intensive, causes compile-time to be slower.)
 
 __Note: When only one output mode (`MIN_OUTPUT_ENABLED`, `XML_OUTPUT_ENABLED`) is set to `True`, the file-extension will always be `.php`. When both output-modes are selected, the XML-output has the file-extension `.php` and the MIN-output `.min.php`__
 ## FAQ
