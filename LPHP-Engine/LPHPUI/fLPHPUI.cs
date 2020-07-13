@@ -56,7 +56,7 @@ namespace LPHPUI
         {
             AppendText("=====================================================", Color.Cyan);
             AppendText("*                 LPHP Preprocessor                 *", Color.Cyan);
-            AppendText("*                Version " + typeof(LPHPCore.LPHPCompiler).Assembly.GetName().Version.ToString(3) + " ALPHA                *", Color.Cyan);
+            AppendText("*                   Version " + typeof(LPHPCore.LPHPCompiler).Assembly.GetName().Version.ToString(3) + "                   *", Color.Cyan);
             AppendText("*        (c) Copyright 2020 Tobias Hattinger        *", Color.Cyan);
             AppendText("*                                                   *", Color.Cyan);
             AppendText("*                       Visit                       *", Color.Cyan);

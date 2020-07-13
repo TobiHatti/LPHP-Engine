@@ -583,7 +583,7 @@ namespace LPHPCore
 
                 using (StreamWriter sw = new StreamWriter(selectedFileExt))
                 {
-                    sw.Write(pFileContent);
+                    sw.Write(AddCopyrightNotice(pFileContent, true));
                     sw.Close();
                 }
 
@@ -595,7 +595,7 @@ namespace LPHPCore
             {
                 using (StreamWriter sw = new StreamWriter(targetFileXML))
                 {
-                    sw.Write(LPHPHTML2XMLFormatter(pFileContent));
+                    sw.Write(LPHPHTML2XMLFormatter(AddCopyrightNotice(pFileContent, false)));
                     sw.Close();
                 }
 
@@ -784,6 +784,18 @@ namespace LPHPCore
             }
 
             return sbXML.ToString();
+        }
+
+        /// <summary>
+        /// Adds a copyright note to the file
+        /// </summary>
+        private static string AddCopyrightNotice(string pContent, bool isMinOutput)
+        {
+            string copyrightNote = $"<!-- CREATED USING LPHP VERSION { typeof(LPHPCore.LPHPCompiler).Assembly.GetName().Version.ToString(3) } BY ENDEV. COPYRIGHT 2020 TOBIAS HATTINGER. https://endev.at/p/LPHP -->";
+
+            if (isMinOutput) return string.Format("{1} {0}", copyrightNote, pContent);
+            else return string.Format("{1}\r\n{0}", copyrightNote, pContent);
+
         }
     }
 }

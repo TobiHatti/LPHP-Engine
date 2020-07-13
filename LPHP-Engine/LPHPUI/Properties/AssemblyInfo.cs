@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("LPHPUI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LPHPUI")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("Endev")]
+[assembly: AssemblyProduct("LPHP")]
+[assembly: AssemblyCopyright("Copyright ©  2020 Tobias Hattinger")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

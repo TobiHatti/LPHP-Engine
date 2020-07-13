@@ -72,7 +72,7 @@ namespace LPHPConsole
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine("=====================================================");
             Console.WriteLine("*                 LPHP Preprocessor                 *");
-            Console.WriteLine("*                Version " + typeof(LPHPCore.LPHPCompiler).Assembly.GetName().Version.ToString(3) + " ALPHA                *");
+            Console.WriteLine("*                   Version " + typeof(LPHPCore.LPHPCompiler).Assembly.GetName().Version.ToString(3) + "                   *");
             Console.WriteLine("*        (c) Copyright 2020 Tobias Hattinger        *");
             Console.WriteLine("*                                                   *");
             Console.WriteLine("*                       Visit                       *");
