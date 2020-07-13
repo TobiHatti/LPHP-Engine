@@ -87,14 +87,18 @@ namespace LPHPCore
         /// <param name="pType">Messagetype</param>
         public static void LogDebugData(string pMessage, LPHPMessageType pType)
         {
-            if ((bool)LPHPCompiler.COMPOPT["ENABLE_CONSOLE_LOG"])
+            try
             {
-                using (StreamWriter sw = new StreamWriter(Path.Combine(LPHPWatchdog.ProjectRoot, LPHPLogFile), true))
+                if ((bool)LPHPCompiler.COMPOPT["ENABLE_CONSOLE_LOG"])
                 {
-                    sw.WriteLine($"[{DateTime.Now:yyyy-MM-ddTHH:mm:ss}]<{pType}> {pMessage}");
+                    using (StreamWriter sw = new StreamWriter(Path.Combine(LPHPWatchdog.ProjectRoot, LPHPLogFile), true))
+                    {
+                        sw.WriteLine($"[{DateTime.Now:yyyy-MM-ddTHH:mm:ss}]<{pType}> {pMessage}");
+                    }
                 }
+                else File.Delete(Path.Combine(LPHPWatchdog.ProjectRoot, LPHPLogFile));
             }
-            else File.Delete(Path.Combine(LPHPWatchdog.ProjectRoot, LPHPLogFile));
+            catch { }
         }
 
         /// <summary>

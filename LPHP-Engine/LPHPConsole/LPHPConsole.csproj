@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>LPHP_Logo.ico</ApplicationIcon>
+    <ApplicationIcon>lphp.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -87,6 +87,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lphp.ico" />
     <Content Include="LPHP_Logo.ico" />
   </ItemGroup>
   <ItemGroup>

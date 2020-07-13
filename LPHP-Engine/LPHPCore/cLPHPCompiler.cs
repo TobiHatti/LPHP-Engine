@@ -20,6 +20,8 @@ namespace LPHPCore
 
         private static string currentCompileFile = "";
 
+        private static readonly string LPHPIniFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Endev", "LPHP", "LPHP.ini");
+
         /// <summary>
         /// Initializes the LPHP-Compiler
         /// </summary>
@@ -34,13 +36,13 @@ namespace LPHPCore
                 { "ENABLE_CONSOLE_LOG", true }
             };
 
-            if (!File.Exists("LPHP.ini"))
+            if (!File.Exists(LPHPIniFile))
             {
                 SaveConfig();
             }
             else
             {
-                using (StreamReader sr = new StreamReader("LPHP.ini"))
+                using (StreamReader sr = new StreamReader(LPHPIniFile))
                 {
                     string line;
                     while ((line = sr.ReadLine()) != null)
@@ -70,7 +72,9 @@ namespace LPHPCore
         /// </summary>
         public static void SaveConfig()
         {
-            using (StreamWriter sw = new StreamWriter("LPHP.ini"))
+            if(!Directory.Exists(Path.GetDirectoryName(LPHPIniFile))) Directory.CreateDirectory(Path.GetDirectoryName(LPHPIniFile));
+
+            using (StreamWriter sw = new StreamWriter(LPHPIniFile))
             {
                 foreach (KeyValuePair<string, object> entry in COMPOPT)
                     sw.WriteLine($"{entry.Key}={entry.Value}");
