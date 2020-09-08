@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "jd7Lu+0Gtu8XAFsQleEB1vI9P1byQ+hA+eM2eW8r5KuiqXspF7pgHOFPddFEopxXTQfXNOMnqELzoqVHN7bl1Q==",
+  "dgSpecHash": "se7l1K5hW2y5UwcPo5rZkeGeHohNfGc1fMuGhUE8aIjBfnTQor92hNvMDBblqCPmSVgNHV/QlfkOD5Q+Sbn70Q==",
   "success": true,
-  "projectFilePath": "H:\\Git\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj",
+  "projectFilePath": "U:\\(06) Code\\(01) C#\\(01) Projects [GIT]\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj",
   "expectedPackageFiles": [
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Users\\Tobias\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Tobias\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
   ],
   "logs": []
 }

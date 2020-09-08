@@ -16,3 +16,12 @@ H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.csproj.CoreCo
 H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.dll
 H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.pdb
 H:\Git\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.csprojAssemblyReference.cache
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPCore\bin\Debug\netstandard2.0\LPHPCore.deps.json
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPCore\bin\Debug\netstandard2.0\LPHPCore.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPCore\bin\Debug\netstandard2.0\LPHPCore.pdb
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.csprojAssemblyReference.cache
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.AssemblyInfoInputs.cache
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.AssemblyInfo.cs
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.csproj.CoreCompileInputs.cache
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPCore\obj\Debug\netstandard2.0\LPHPCore.pdb

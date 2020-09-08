@@ -65,6 +65,8 @@ namespace LPHPUI
             AppendText("=====================================================\r\n\r\n", Color.Cyan);
         }
 
+        private int lastCompilerResult = 0;
+
         private void bgwLPHPCompiler_DoWork(object sender, DoWorkEventArgs e)
         {
             // Initialize LPHP-Compiler
@@ -103,8 +105,13 @@ namespace LPHPUI
                 if(watchdogResult == -2)
                 {
                     bgwLPHPCompiler.ReportProgress(0, new Tuple<string, Color>("Problem detected. Halting LPHP for 5 seconds.", Color.OrangeRed));
+
+                    if (lastCompilerResult == 0) nicErrorNotify.ShowBalloonTip(3000);
+                    
                     Thread.Sleep(5000);
                 }
+
+                lastCompilerResult = watchdogResult;
             }
             
         }
@@ -264,11 +271,6 @@ namespace LPHPUI
             {
                 MessageBox.Show("Please select a valid project folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-
-        private void tglEnableXMLOutput_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

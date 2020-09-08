@@ -1,33 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "H:\\Git\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj": {}
+    "U:\\(06) Code\\(01) C#\\(01) Projects [GIT]\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj": {}
   },
   "projects": {
-    "H:\\Git\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj": {
-      "version": "1.0.0",
+    "U:\\(06) Code\\(01) C#\\(01) Projects [GIT]\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj": {
+      "version": "1.1.0",
       "restore": {
-        "projectUniqueName": "H:\\Git\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj",
+        "projectUniqueName": "U:\\(06) Code\\(01) C#\\(01) Projects [GIT]\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj",
         "projectName": "LPHPCore",
-        "projectPath": "H:\\Git\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj",
+        "projectPath": "U:\\(06) Code\\(01) C#\\(01) Projects [GIT]\\LPHP\\LPHP-Engine\\LPHPCore\\LPHPCore.csproj",
         "packagesPath": "C:\\Users\\Tobias\\.nuget\\packages\\",
-        "outputPath": "H:\\Git\\LPHP\\LPHP-Engine\\LPHPCore\\obj\\",
+        "outputPath": "U:\\(06) Code\\(01) C#\\(01) Projects [GIT]\\LPHP\\LPHP-Engine\\LPHPCore\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
           "C:\\Users\\Tobias\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/TobiHatti/index.json": {}
         },
         "frameworks": {
           "netstandard2.0": {
@@ -60,7 +56,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\TempInstall\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

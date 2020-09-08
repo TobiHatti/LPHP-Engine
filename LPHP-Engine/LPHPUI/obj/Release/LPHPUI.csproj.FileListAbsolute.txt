@@ -27,3 +27,32 @@ H:\Git\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.csproj.CoreCompileInputs.cache
 H:\Git\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.csproj.CopyComplete
 H:\Git\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.exe
 H:\Git\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.pdb
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\LPHPUI.exe
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\LPHPUI.pdb
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\LPHPCore.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Grid.Windows.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Shared.Base.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Shared.Windows.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Tools.Base.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Tools.Windows.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Grid.Base.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.SpellChecker.Base.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\EnvDTE.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\stdole.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\LPHPCore.pdb
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Grid.Windows.xml
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Shared.Base.xml
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Shared.Windows.xml
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Tools.Base.xml
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Tools.Windows.xml
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Grid.Base.xml
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.SpellChecker.Base.xml
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Grid.Windows.XmlSerializers.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.csprojAssemblyReference.cache
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.LPHPUI.resources
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.Properties.Resources.resources
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.csproj.GenerateResource.cache
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.csproj.CoreCompileInputs.cache
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.csproj.CopyComplete
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.exe
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.pdb

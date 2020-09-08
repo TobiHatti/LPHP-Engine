@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             Syncfusion.Windows.Forms.Tools.SliderCollection sliderCollection1 = new Syncfusion.Windows.Forms.Tools.SliderCollection();
             Syncfusion.Windows.Forms.Tools.SliderCollection sliderCollection2 = new Syncfusion.Windows.Forms.Tools.SliderCollection();
             Syncfusion.Windows.Forms.Tools.SliderCollection sliderCollection3 = new Syncfusion.Windows.Forms.Tools.SliderCollection();
@@ -52,6 +53,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnOpenProjectFolder = new System.Windows.Forms.Button();
             this.chbSaveConsoleLog = new System.Windows.Forms.CheckBox();
+            this.nicErrorNotify = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.tglRemoveHTMLComments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableMinOutput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableXMLOutput)).BeginInit();
@@ -241,7 +243,6 @@
             this.tglEnableXMLOutput.ToggleState = Syncfusion.Windows.Forms.Tools.ToggleButtonState.Active;
             this.tglEnableXMLOutput.VisualStyle = Syncfusion.Windows.Forms.Tools.ToggleButtonStyle.Office2016Colorful;
             this.tglEnableXMLOutput.ToggleStateChanged += new Syncfusion.Windows.Forms.Tools.ToggleStateChangedEventHandler(this.tglEnableXMLOutput_ToggleStateChanged);
-            this.tglEnableXMLOutput.Click += new System.EventHandler(this.tglEnableXMLOutput_Click);
             // 
             // btnClearConsoleLog
             // 
@@ -329,6 +330,16 @@
             this.chbSaveConsoleLog.UseVisualStyleBackColor = true;
             this.chbSaveConsoleLog.CheckedChanged += new System.EventHandler(this.chbSaveConsoleLog_CheckedChanged);
             // 
+            // nicErrorNotify
+            // 
+            this.nicErrorNotify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Error;
+            this.nicErrorNotify.BalloonTipText = "LPHP has encountered an error during compilation.\r\nOpen LPHP for more information" +
+    ".";
+            this.nicErrorNotify.BalloonTipTitle = "LPHP Compilation Error";
+            this.nicErrorNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("nicErrorNotify.Icon")));
+            this.nicErrorNotify.Text = "nicError";
+            this.nicErrorNotify.Visible = true;
+            // 
             // LPHPUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -408,6 +419,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnOpenProjectFolder;
         private System.Windows.Forms.CheckBox chbSaveConsoleLog;
+        private System.Windows.Forms.NotifyIcon nicErrorNotify;
     }
 }
 
