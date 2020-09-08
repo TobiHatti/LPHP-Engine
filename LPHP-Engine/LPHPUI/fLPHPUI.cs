@@ -48,8 +48,22 @@ namespace LPHPUI
 
         private void LPHPUI_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (bgwLPHPCompiler.WorkerSupportsCancellation)
-                bgwLPHPCompiler.CancelAsync();
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                nicLPHPNic.BalloonTipTitle = "LPHP is still running";
+                nicLPHPNic.BalloonTipText = "Right-click the LPHP icon to open or close the application.";
+                nicLPHPNic.BalloonTipIcon = ToolTipIcon.Info;
+                nicLPHPNic.ShowBalloonTip(3000);
+
+                e.Cancel = true;
+                Hide();
+                
+            }
+            else
+            {
+                if (bgwLPHPCompiler.WorkerSupportsCancellation)
+                    bgwLPHPCompiler.CancelAsync();
+            }
         }
 
         private void ShowStartupBanner()
@@ -106,7 +120,13 @@ namespace LPHPUI
                 {
                     bgwLPHPCompiler.ReportProgress(0, new Tuple<string, Color>("Problem detected. Halting LPHP for 5 seconds.", Color.OrangeRed));
 
-                    if (lastCompilerResult == 0) nicErrorNotify.ShowBalloonTip(3000);
+                    if (lastCompilerResult == 0)
+                    {
+                        nicLPHPNic.BalloonTipTitle = "LPHP Compilation Error";
+                        nicLPHPNic.BalloonTipText = "LPHP has encountered an error during compilation.\r\n Open LPHP for more information.";
+                        nicLPHPNic.BalloonTipIcon = ToolTipIcon.Error;
+                        nicLPHPNic.ShowBalloonTip(3000);
+                    }
                     
                     Thread.Sleep(5000);
                 }
@@ -271,6 +291,21 @@ namespace LPHPUI
             {
                 MessageBox.Show("Please select a valid project folder.", "No folder selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void closeLPHPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void showLPHPConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
+        }
+
+        private void nicLPHPNic_DoubleClick(object sender, EventArgs e)
+        {
+            this.Show();
         }
     }
 }

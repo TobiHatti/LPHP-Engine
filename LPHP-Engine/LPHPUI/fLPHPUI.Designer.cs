@@ -53,11 +53,16 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnOpenProjectFolder = new System.Windows.Forms.Button();
             this.chbSaveConsoleLog = new System.Windows.Forms.CheckBox();
-            this.nicErrorNotify = new System.Windows.Forms.NotifyIcon(this.components);
+            this.nicLPHPNic = new System.Windows.Forms.NotifyIcon(this.components);
+            this.cmsNic = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showLPHPConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.closeLPHPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.tglRemoveHTMLComments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableMinOutput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableXMLOutput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.cmsNic.SuspendLayout();
             this.SuspendLayout();
             // 
             // rtbLogOutput
@@ -330,15 +335,41 @@
             this.chbSaveConsoleLog.UseVisualStyleBackColor = true;
             this.chbSaveConsoleLog.CheckedChanged += new System.EventHandler(this.chbSaveConsoleLog_CheckedChanged);
             // 
-            // nicErrorNotify
+            // nicLPHPNic
             // 
-            this.nicErrorNotify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Error;
-            this.nicErrorNotify.BalloonTipText = "LPHP has encountered an error during compilation.\r\nOpen LPHP for more information" +
-    ".";
-            this.nicErrorNotify.BalloonTipTitle = "LPHP Compilation Error";
-            this.nicErrorNotify.Icon = ((System.Drawing.Icon)(resources.GetObject("nicErrorNotify.Icon")));
-            this.nicErrorNotify.Text = "nicError";
-            this.nicErrorNotify.Visible = true;
+            this.nicLPHPNic.ContextMenuStrip = this.cmsNic;
+            this.nicLPHPNic.Icon = ((System.Drawing.Icon)(resources.GetObject("nicLPHPNic.Icon")));
+            this.nicLPHPNic.Text = "LPHP Engine";
+            this.nicLPHPNic.Visible = true;
+            this.nicLPHPNic.DoubleClick += new System.EventHandler(this.nicLPHPNic_DoubleClick);
+            // 
+            // cmsNic
+            // 
+            this.cmsNic.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showLPHPConsoleToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.closeLPHPToolStripMenuItem});
+            this.cmsNic.Name = "cmsNic";
+            this.cmsNic.Size = new System.Drawing.Size(182, 54);
+            // 
+            // showLPHPConsoleToolStripMenuItem
+            // 
+            this.showLPHPConsoleToolStripMenuItem.Name = "showLPHPConsoleToolStripMenuItem";
+            this.showLPHPConsoleToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.showLPHPConsoleToolStripMenuItem.Text = "Show LPHP Console";
+            this.showLPHPConsoleToolStripMenuItem.Click += new System.EventHandler(this.showLPHPConsoleToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(178, 6);
+            // 
+            // closeLPHPToolStripMenuItem
+            // 
+            this.closeLPHPToolStripMenuItem.Name = "closeLPHPToolStripMenuItem";
+            this.closeLPHPToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.closeLPHPToolStripMenuItem.Text = "Close LPHP";
+            this.closeLPHPToolStripMenuItem.Click += new System.EventHandler(this.closeLPHPToolStripMenuItem_Click);
             // 
             // LPHPUI
             // 
@@ -392,6 +423,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableMinOutput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tglEnableXMLOutput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.cmsNic.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -419,7 +451,11 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnOpenProjectFolder;
         private System.Windows.Forms.CheckBox chbSaveConsoleLog;
-        private System.Windows.Forms.NotifyIcon nicErrorNotify;
+        private System.Windows.Forms.NotifyIcon nicLPHPNic;
+        private System.Windows.Forms.ContextMenuStrip cmsNic;
+        private System.Windows.Forms.ToolStripMenuItem showLPHPConsoleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem closeLPHPToolStripMenuItem;
     }
 }
 
