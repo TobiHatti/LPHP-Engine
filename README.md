@@ -1,6 +1,6 @@
 <img align="right" width="80" height="80" data-rmimg src="https://endev.at/content/projects/LPHP/LPHP_Logo.svg">
 
-# LPHP-Engine v1.0.0
+# LPHP-Engine v1.1.0
 ![GitHub](https://img.shields.io/github/license/TobiHatti/LPHP-Engine)
 [![GitHub Release Date](https://img.shields.io/github/release-date-pre/TobiHatti/LPHP-Engine?include_prereleases)](https://github.com/TobiHatti/LPHP-Engine/releases)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/TobiHatti/LPHP-Engine?include_prereleases)](https://github.com/TobiHatti/LPHP-Engine/releases)
@@ -226,8 +226,8 @@ click on "More Info" and then on "Run anyway". Alternatively, you can just downl
 
 ## Downloads
 
-Get the current version [here](https://github.com/TobiHatti/LPHP-Engine/releases)
+Get the current version [here](https://github.com/TobiHatti/LPHP-Engine/releases/latest)
 
-Version: 1.0.0
+Version: 1.1.0
 
-MD5: 56979C7390AB58E71A6CA546F406B28A
+MD5: E9151E940F663AB4F97FD57DA4AB9DB9
