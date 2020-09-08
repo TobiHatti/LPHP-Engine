@@ -56,3 +56,4 @@ U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPH
 U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.csproj.CopyComplete
 U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.exe
 U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\obj\Release\LPHPUI.pdb
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPUI\bin\Release\Syncfusion.Licensing.dll
