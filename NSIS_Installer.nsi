@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LPHP-Engine"
-!define PRODUCT_VERSION "1.0.0"
+!define PRODUCT_VERSION "1.1.0"
 !define PRODUCT_PUBLISHER "Endev"
 !define PRODUCT_WEB_SITE "https://endev.at/p/lphp"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\LPHPConsole.exe"

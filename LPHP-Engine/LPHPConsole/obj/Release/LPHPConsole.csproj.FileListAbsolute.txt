@@ -8,3 +8,13 @@ H:\Git\LPHP\LPHP-Engine\LPHPConsole\obj\Release\LPHPConsole.csproj.CoreCompileIn
 H:\Git\LPHP\LPHP-Engine\LPHPConsole\obj\Release\LPHPConsole.csproj.CopyComplete
 H:\Git\LPHP\LPHP-Engine\LPHPConsole\obj\Release\LPHPConsole.exe
 H:\Git\LPHP\LPHP-Engine\LPHPConsole\obj\Release\LPHPConsole.pdb
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\bin\Release\LPHPConsole.exe.config
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\bin\Release\LPHPConsole.exe
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\bin\Release\LPHPConsole.pdb
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\bin\Release\LPHPCore.dll
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\bin\Release\LPHPCore.pdb
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\obj\Release\LPHPConsole.csprojAssemblyReference.cache
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\obj\Release\LPHPConsole.csproj.CoreCompileInputs.cache
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\obj\Release\LPHPConsole.csproj.CopyComplete
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\obj\Release\LPHPConsole.exe
+U:\(06) Code\(01) C#\(01) Projects [GIT]\LPHP\LPHP-Engine\LPHPConsole\obj\Release\LPHPConsole.pdb
